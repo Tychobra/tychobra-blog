@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello R Markdown | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1509563497/tychobra-logo-blue_dacbnz.svg" />
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+
+<link rel="stylesheet" href="/css/tychobra.css" />
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-light" id="mainNav">
+        <div class="container">
+          <a href="htts://tychobra.com" class="navbar-brand">
+              Tychobra
+          </a>
+          <button
+              class="navbar-toggler"
+              type="button" data-toggle="collapse"
+              data-target="#navbarExample"
+              aria-controls="navbarExample"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+
+              <i class="fa fa-bars"></i>
+          </button>
+
+
+          <div class="collapse navbar-collapse" id="navbarExample">
+              <ul class="navbar-nav ml-md-auto">
+                  <li class="nav-item">
+                      <a href="https://tychobra.com/shiny" class="nav-link">
+                          Shiny Examples
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="https://tychobra.com/learn" class="nav-link">
+                          Learn
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a href="https://tychobra.com/about" class="nav-link">
+                          About
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a
+                          href="/blog"
+                          class="btn btn-lg btn-login nav-link">
+                          Blog
+                      </a>
+                  </li>
+              </ul>
+          </div>
+        </div>
+    </nav>
+<div class="container" style="padding-top: 150px; padding-bottom: 100px">
+  <div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+
+<div class="article-meta">
+<h1><span class="title">Hello R Markdown</span></h1>
+<h2 class="author">Frida Gomam</h2>
+<h2 class="date">2015/07/23</h2>
+</div>
+
+<main>
+<div id="r-markdown" class="section level1">
+<h1>R Markdown</h1>
+<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>You can embed an R code chunk like this:</p>
+<pre class="r"><code>summary(cars)
+##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00
+fit &lt;- lm(dist ~ speed, data = cars)
+fit
+## 
+## Call:
+## lm(formula = dist ~ speed, data = cars)
+## 
+## Coefficients:
+## (Intercept)        speed  
+##     -17.579        3.932</code></pre>
+</div>
+<div id="including-plots" class="section level1">
+<h1>Including Plots</h1>
+<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
+<pre class="r"><code>par(mar = c(0, 1, 0, 1))
+pie(
+  c(280, 60, 20),
+  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
+  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
+  init.angle = -50, border = NA
+)</code></pre>
+<div class="figure"><span id="fig:pie"></span>
+<img src="/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
+<p class="caption">
+Figure 1: A fancy pie chart.
+</p>
+</div>
+</div>
+
+</main>
+
+      </div>
+    </div>
+  </div> 
+  <footer class="text-center">
+    <div class="footer-above">
+      <div class="container">
+        <div class="row">
+          <div class="footer-col col-sm-6">
+            <a style="marginBottom: 20"
+               class="btn btn-lg btn-outline"
+               href="https://calendly.com/tychobra/andy-merlino/08-25-2017">
+               Schedule Meeting
+            </a>
+            <p>contact@tychobra.com</p>
+          </div>
+          <div class="footer-col col-sm-6">
+            <h3>Around the Web</h3>
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://www.youtube.com/channel/UC4cF877tXYUa3h3Ou6tcxXA">
+                    <i class="fa fa-fw fa-youtube"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://twitter.com/tychobraLLC">
+                    <i class="fa fa-fw fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="btn-social btn-outline" href="https://github.com/Tychobra">
+                    <i class="fa fa-fw fa-github"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-below">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 text-center">
+              Copyright &copy; Tychobra 2017
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
+
