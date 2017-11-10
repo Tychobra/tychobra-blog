@@ -28,7 +28,7 @@ nav {
 }
 
 .navbar {
-  padding: 0;
+  padding: 0 0.5rem;
 }
 
 .loading {
@@ -115,7 +115,6 @@ section.success {
 #mainNav .navbar-toggler {
   font-size: 14px;
   padding: 11px;
-  margin-top: 10px;
   color: #0277BD;
   border-color: #0277BD; }
 #mainNav .navbar-toggler:hover, #mainNav .navbar-toggler:focus {
@@ -165,20 +164,22 @@ header.masthead {
   text-align: center;
   color: white;
   background: #0277BD; }
-  /*header.masthead .container {
-    padding-top: 90px;
-    padding-bottom: 50px; }*/
+/* for small screen */
+header.masthead .container {
+  padding-top: 90px;
+  padding-bottom: 50px; 
+}
   /*header.masthead img {
     display: block;
     margin: 0 auto 20px; }*/
   header.masthead .intro-text .name {
     /*font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
-    font-size: 2em;
+    font-size: 3em;
     font-weight: 700;
     display: block;
     /*text-transform: uppercase; */}
   header.masthead .intro-text .skills {
-    font-size: 1.25em;
+    font-size: 1.5em;
     font-weight: 300; }
 
 @media (min-width: 768px) {
