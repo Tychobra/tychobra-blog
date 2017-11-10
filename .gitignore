@@ -3,3 +3,4 @@
 *.Rproj
 .Rhistory
 public/
+.Rproj.user
