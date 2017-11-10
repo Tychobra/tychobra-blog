@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ .Title }} | {{ .Site.Title }}</title>
     <link rel="stylesheet" href="{{ "/css/style.css" | relURL }}" />
-    {{ partial "head_custom.html" . }}
+    <link rel="icon" href="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1509563497/tychobra-logo-blue_dacbnz.svg" />
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="{{ "/css/tychobra.css" | relURL }}" />
   </head>
 
   <body>
@@ -34,7 +42,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="https://tychobra.com/learn" class="nav-link">
+                      <a href="/learn" class="nav-link">
                           Learn
                       </a>
                   </li>
@@ -52,6 +60,5 @@
           </div>
         </div>
     </nav>
-<div class="container" style="padding-top: 150px; padding-bottom: 100px">
-  <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+
+  

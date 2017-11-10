@@ -1,18 +1,23 @@
 {{ partial "header.html" . }}
+<div class="container wrapper">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      {{if not .IsHome }}
+      <h1>{{ .Title }}</h1>
+      {{ end }}
 
-{{if not .IsHome }}
-<h1>{{ .Title }}</h1>
-{{ end }}
+      {{ .Content }}
 
-{{ .Content }}
-
-<ul>
-  {{ range (where .Data.Pages "Section" "!=" "") }}
-  <li>
-    <span class="date">{{ .Date.Format "2006/01/02" }}</span>
-    <a href="{{ .URL }}">{{ .Title }}</a>
-  </li>
-  {{ end }}
-</ul>
+      <ul>
+        {{ range (where .Data.Pages "Section" "!=" "") }}
+        <li>
+          <span class="date">{{ .Date.Format "2006/01/02" }}</span>
+          <a href="{{ .URL }}">{{ .Title }}</a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+  </div>
+</div>
 
 {{ partial "footer.html" . }}

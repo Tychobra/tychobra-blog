@@ -1,0 +1,122 @@
+{{ partial "header.html" . }}
+<div>
+  <section class="success">
+    <div class="container wrapper">
+      <div class="row">
+        <div class="col-sm-6">
+          <h3 style="lineHeight: 1.5">Bypass the frustration and become a productive R/Shiny developer as quickly as possible</h3>
+        </div>
+        <div class="col-sm-5 offset-sm-1">
+          <div class="col-sm-12">
+            <script>
+              const scrollToId = (id) => {
+                console.log('I ran');
+                $('html,body').animate({
+                  scrollTop: $(id).offset().top
+                }, 'slow')
+              }
+            </script>
+            <button 
+              class="btn btn-lg btn-outline"
+              onclick="scrollToId('#onSite')"
+              style="width: 100%">
+              On Site Training
+            </button>
+          </div>
+          <div class="col-sm-12">
+            <button 
+              class="btn btn-lg btn-outline"
+                onClick="scrollToId('#online')"
+              style="width: 100%">
+              Online Learning
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container wrapper text-center" id="onSite">
+    <div class="row">
+      <div class="col-12">
+        <h1>On Site Training</h1>
+        <hr class="star-primary" />
+        <br />
+        <p>Each of these classes can vary from one 3 hour session to an 18 hour
+           3 day course day depending on how deep you want to go</p>
+        <br />
+      </div>
+      <br />
+      <br />
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Intro to R</h4>
+            <p class="card-text">
+               A quick background on R, and exercises to get up and running.
+               This is not a comprehensive dive into R, but it will make you productive 
+               as fast as possible
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Predictive Modeling</h4>
+            <p class="card-text">
+               Learn best practices and how to leverage R's world class predictive 
+               modeling and machine learning capabilities using the caret and keras packages 
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Intro to Shiny</h4>
+            <p class="card-text">
+               Learn the most powerful and flexible way to communicate your R analysis.  We 
+               will create a Shiny app specific to your industry and make you a master of reactivity
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <br />
+        <div class="row">
+          <div class="col-sm-4 offset-sm-2">
+            <a class="btn btn-lg btn-outline-green"
+               href="mailto:contact@tychobra.com"
+               style="width: '100%'">
+               contact@tychobra.com
+            </a>
+          </div>
+          <div class="col-sm-4">
+            <a 
+              class="btn btn-lg btn-outline-green"
+              href="https://calendly.com/tychobra/andy-merlino/08-25-2017"
+              style="width: '100%'">
+              Schedule Meeting
+            </a>
+          </div>
+        </div>
+      </div>                    
+    </div>
+    <br />
+  </div>
+  <div class="container">
+    <hr />
+  </div>
+  <div class="container wrapper" id="online">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1>Online Learning</h1>
+        <hr class="star-primary" />
+        <br />
+        <h3>Coming Soon...</h3>
+        <br />
+      </div>                    
+    </div>
+  </div>
+</div>
+{{ partial "footer.html" . }}
