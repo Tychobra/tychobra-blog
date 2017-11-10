@@ -24,6 +24,11 @@ a.active {
 
 nav {
   border-bottom: 1px solid #ccc;
+  line-height: 1.5em;
+}
+
+.navbar {
+  padding: 0;
 }
 
 .loading {
