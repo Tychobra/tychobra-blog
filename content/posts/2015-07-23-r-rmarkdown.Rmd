@@ -4,6 +4,8 @@ author: "Frida Gomam"
 date: 2015-07-23T21:13:14-05:00
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1509563497/tychobra-logo-blue_dacbnz.svg"
+intro: "Some cool shit about Rmarkdown and stuff.  Andy is the man"
 ---
 
 ```{r setup, include=FALSE}

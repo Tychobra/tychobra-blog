@@ -2,17 +2,19 @@
 <div class="container wrapper">
   <div class="row">
     <div class="col-lg-8 offset-lg-2">
-      {{if not .IsHome }}
-      <h1>{{ .Title }}</h1>
-      {{ end }}
-
-      {{ .Content }}
-
-      <ul>
+      <ul style="list-style-type: none;">
         {{ range (where .Data.Pages "Section" "!=" "") }}
         <li>
-          <span class="date">{{ .Date.Format "2006/01/02" }}</span>
-          <a href="{{ .URL }}">{{ .Title }}</a>
+          <div class="row">
+            <div class="col-md-4">
+              <img src="{{ .Params.image }}"/>
+            </div>
+            <div class="col-md-8">
+              <a href="{{ .URL }}">{{ .Title }}</a>
+              <div class="date">{{ .Date.Format "2006/01/02" }}</div>
+              <div>{{.Params.intro}}</div>
+            </div>
+          </div>
         </li>
         {{ end }}
       </ul>
