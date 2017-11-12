@@ -1,12 +1,29 @@
 {{ partial "header.html" . }}
-<div class="article-meta container wrapper" style="margin-bottom: 100px">
-  <h1><span class="title">{{ .Title }}</span></h1>
-  {{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
-  {{ if .Params.date }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+<div class="container" style="margin-bottom: 40px; margin-top: 100px;">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="row">
+        {{ if .Params.image }}
+        <div class = "col-md-5">
+          <img src="{{ .Params.image }}" />
+        </div>
+        <div class = "col-md-7">
+          <h1><span class="title">{{ .Title }}</span></h1>
+          {{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
+          {{ if .Params.date }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+        </div>
+      {{ else }}
+        <div class="col-12">
+          <h1><span class="title">{{ .Title }}</span></h1>
+          {{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
+          {{ if .Params.date }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+        </div>
+      {{ end }}
+      </div>
+    </div>
   </div>
 
   <main>
-    <img src="{{ .Params.image }}"/>    
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
         {{ .Content }}
@@ -16,3 +33,6 @@
   </main>
 </div>
 {{ partial "footer.html" . }}
+{{ partial "footer-posts.html" . }}
+</body>
+</html>
