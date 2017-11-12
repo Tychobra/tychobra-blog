@@ -5,6 +5,8 @@
   line-height: 1.5em;
 }*/
 
+link { display: inline; }
+
 /* header and footer areas */
 .menu { padding: 0; }
 .menu li { display: inline-block; }

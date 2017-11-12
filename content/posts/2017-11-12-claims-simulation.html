@@ -1,0 +1,155 @@
+---
+title: "Simulating Insurance Claims"
+author: "Andy Merlino"
+date: "2017-11-12"
+categories: ["R"]
+tags: ["R", "tuorial", "simulation", "actuarial"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/c_fill,h_400,w_400/v1510529538/matrix-434035_640_pvewnf.jpg"
+intro: "When I was fresh out of college, my boss asked me to use R to run simulations.  This was my first introduction to R, and I was a little reluctant to get started.  But with some Googling, I overcame the initial frustrations and am now about the biggest R fanboy around.  It turns out that random simulation serves as a nice introdution to R.  This tutorial gives a basic introduction to simulations in R."
+---
+
+
+
+<p>When I was fresh out of college, my boss asked me to run some simulations in R. This was my first introduction to R, and I was a little reluctant to get started. But with some Googling, I overcame the initial frustrations and am now about the biggest R fanboy around. It turns out that random simulation serves as a nice introdution to R because it is relatively simple to produce useful output.</p>
+<p>In this tutorial we will run simulations very similar to the simulations I ran when first learning R (except the code will be a lot nicer as I was a complete noob at that time). Our simulations will model insurance claims.</p>
+<div id="step-1-structure-the-simulation" class="section level3">
+<h3>Step 1: Structure the Simulation</h3>
+<p>Before we execute any R code, we need to describe the problem a little more fully. Let’s imagine that we own an insurance company and we are writing <code>100</code> identical insurance policies next year. We want to measure the losses we expect to pay on claims resulting from these policies. Our actuary told us the probability of a single policy having a claim is <code>10%</code>. Therefore we expect an average of <code>10</code> claims <code>10 = 100 * 0.1</code>. We can use a discrete probability distribution to simulate the frequency (number of claims) based on this <code>10</code> claim average.</p>
+<p>We then need to simulate a loss amount for each claim. We can use a continuous probability distribution for this simulation. Luckily our actuary already told us claim severities follow a lognormal distribution with a log mean of 9 and a log standard deviation of 1.75 (In a real world simulation we could measure how well various distributions fit historical claims experience using several options available in R, but that is beyond the scope of this tutorial).</p>
+</div>
+<div id="step-2-run-a-single-frequencyseverity-observation" class="section level3">
+<h3>Step 2: Run a Single Frequency/Severity Observation</h3>
+<p>We will refer to the combination of a frequency simulation and the accompanying severity simulations as an observation. here we run one observation:</p>
+<pre class="r"><code># set the seed so we can reproduce the simulation
+set.seed(1234)
+
+expected_freq &lt;- 10
+
+# generate a single frequency from the poisson distribution
+freq &lt;- rpois(n = 1, lambda = expected_freq)
+
+# generate `freq` severities.  Each severity represents the ultimate value of 1 claim 
+# we will use the lognormal distribution here
+sev &lt;- rlnorm(n = freq, meanlog = 9, sdlog = 1.75)
+
+# view the results
+sev
+## [1] 14046.732 15195.521  2256.730  8625.924  9874.455 98712.420</code></pre>
+<p>In the above example our frequency was 6, and our severities for each claim were 14,047, 15,196, 2,257, 8,626, 9,874, 98,712.</p>
+</div>
+<div id="step-3-run-many-observations" class="section level3">
+<h3>Step 3: Run Many Observations</h3>
+<p>Now that we know how to run a single observation we need to randomly generate a bunch of observations. By inspecting the results of many observations we can determine the confidence level of experiencing different loss amounts.</p>
+<pre class="r"><code>library(dplyr)
+library(purrr)
+
+# number of observations
+n &lt;- 1000
+# generate many frequencies from the poisson distribution
+freqs &lt;- rpois(n = n, lambda = 5)
+
+# generate `freq` severities.  Each severity represents the ultimate value of 1 claim 
+obs &lt;- purrr::map(freqs, function(freq) rlnorm(n = freq, meanlog = 9, sdlog = 1.75))
+
+# tidy up the data
+i &lt;- 0
+obs &lt;- purrr::map(obs, function(sev) {
+  i &lt;&lt;- i + 1
+  data_frame(
+    ob = i,
+    sev = sev
+  )
+})
+
+obs &lt;- dplyr::bind_rows(obs)
+head(obs, 10)
+## # A tibble: 10 x 2
+##       ob        sev
+##    &lt;dbl&gt;      &lt;dbl&gt;
+##  1     1   3470.104
+##  2     1  15261.510
+##  3     1  52021.477
+##  4     1   5725.012
+##  5     1 283310.904
+##  6     1   4628.197
+##  7     1  19724.890
+##  8     2   4609.787
+##  9     2  31764.699
+## 10     2 108665.413</code></pre>
+</div>
+<div id="step-4-initial-inspection-of-results" class="section level3">
+<h3>Step 4: Initial Inspection of Results</h3>
+<div id="plot-the-distribution-of-oberservations" class="section level5">
+<h5>4.1: Plot the distribution of oberservations</h5>
+<pre class="r"><code>library(ggplot2)
+
+# aggregate claim severities by observation
+obs_total &lt;- obs %&gt;%
+  group_by(ob) %&gt;%
+  summarise(sev = sum(sev))
+
+ggplot(obs_total, aes(sev)) +
+  geom_histogram()</code></pre>
+<p><img src="/posts/2017-11-12-claims-simulation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="view-some-quantiles-and-summary-info" class="section level5">
+<h5>4.2: View some quantiles and summary info</h5>
+<pre class="r"><code>quantile(obs_total$sev, probs = c(0.5, 0.75, 0.9, 0.95, 0.99))
+##        50%        75%        90%        95%        99% 
+##   98757.44  196070.01  412095.83  627377.97 1130028.77
+
+summary(obs_total$sev)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##      79   44624   98757  176174  196070 3417177</code></pre>
+</div>
+</div>
+<div id="step-5-alter-the-simulation-to-specific-needs" class="section level3">
+<h3>Step 5: Alter the simulation to specific needs</h3>
+<p>Assuming our initial inspection of the output in step 4 went as planned, we are ready to customize our simulation. We could adjust our simulation in a variety of different ways. Some common paths to take from here are:</p>
+<div id="capping-claims-at-individual-claim-limits" class="section level5">
+<h5>5.1 Capping claims at individual claim limits</h5>
+<pre class="r"><code># cap claims at 250K
+obs &lt;- obs %&gt;%
+  dplyr::mutate(sev_250K = if_else(sev &gt; 250000, 250000, sev))</code></pre>
+</div>
+<div id="capping-observations-at-an-aggregate-stop-loss" class="section level5">
+<h5>5.2 Capping observations at an aggregate stop loss</h5>
+<pre class="r"><code># cap each observation at an aggregate stop loss
+stop_loss &lt;- 1000000
+
+obs_agg &lt;- obs %&gt;%
+  dplyr::group_by(ob) %&gt;%
+  dplyr::summarise(
+    sev = sum(sev),
+    sev_250K = sum(sev_250K)) %&gt;%
+  dplyr::mutate(
+    sev_agg = if_else(sev &gt; stop_loss, stop_loss, sev),
+    sev_capped_agg = if_else(sev_250K &gt; stop_loss, stop_loss, sev_250K)
+  )
+
+summary(obs_agg)
+##        ob              sev             sev_250K           sev_agg         
+##  Min.   :   1.0   Min.   :     79   Min.   :    78.5   Min.   :     78.5  
+##  1st Qu.: 249.2   1st Qu.:  44624   1st Qu.: 44623.7   1st Qu.:  44623.7  
+##  Median : 499.5   Median :  98757   Median : 98757.4   Median :  98757.4  
+##  Mean   : 499.2   Mean   : 176174   Mean   :142333.7   Mean   : 167979.5  
+##  3rd Qu.: 749.8   3rd Qu.: 196070   3rd Qu.:196070.0   3rd Qu.: 196070.0  
+##  Max.   :1000.0   Max.   :3417177   Max.   :842367.0   Max.   :1000000.0  
+##  sev_capped_agg    
+##  Min.   :    78.5  
+##  1st Qu.: 44623.7  
+##  Median : 98757.4  
+##  Mean   :142333.7  
+##  3rd Qu.:196070.0  
+##  Max.   :842367.0</code></pre>
+</div>
+<div id="simulate-multiple-types-of-claims" class="section level5">
+<h5>5.3: Simulate multiple types of claims</h5>
+<p>There is no reason the claims have to all be generated from the same distributions. We could simulate claims based on many different possible frequency and severity distributions. We could also add parameter risk to our frequency and severity selections. We could add deductibles, quota share reinsurance, and a variety of other alterations based on our specific needs.</p>
+</div>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>Simulations are a fun way to get started in R, and with a little imagination simulations allow you to answer highly complicated problems that would be impossible to solve directly from math equations and probability density functions.</p>
+</div>
