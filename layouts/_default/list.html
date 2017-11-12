@@ -1,18 +1,23 @@
 {{ partial "header.html" . }}
 <div class="container wrapper">
   <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-12">
       <ul style="list-style-type: none;">
         {{ range (where .Data.Pages "Section" "!=" "") }}
-        <li>
-          <div class="row">
-            <div class="col-md-4">
-              <img src="{{ .Params.image }}"/>
-            </div>
-            <div class="col-md-8">
-              <a href="{{ .URL }}">{{ .Title }}</a>
-              <div class="date">{{ .Date.Format "2006/01/02" }}</div>
-              <div>{{.Params.intro}}</div>
+        <li style="margin-bottom: 30px;">
+          <div class="card" style=" background-color: #f8f9fa">
+            <div class="row">
+              <div class="col-md-4">
+                <img class="card-img-left" src="{{ .Params.image }}" alt="Card image cap" />
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h4 class="card-title">{{ .Title }}</h4>
+                  <div class="date">{{ .Date.Format "2006/01/02" }}</div>
+                  <p class="card-text">{{ .Params.intro }}</p>
+                  <a href="{{ .URL }}" class="btn btn-primary">Read More</a>
+                </div>
+              </div>
             </div>
           </div>
         </li>

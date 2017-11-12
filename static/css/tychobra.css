@@ -27,6 +27,16 @@ nav {
   line-height: 1.5em;
 }
 
+.card-img-left {
+  border-bottom-left-radius: calc(.25rem - 1px);
+  border-top-left-radius: calc(.25rem - 1px);
+  float: left;
+  width: 100%;
+  /*padding-right: 1em;
+  background-size: cover;*/
+  /*margin-bottom: -1.25em;*/
+}
+
 .navbar {
   padding: 0 0.5rem;
 }
