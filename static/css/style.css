@@ -22,7 +22,7 @@ hr {
   color: #ddd;
 }
 
-/* code */
+/* code 
 pre {
   border: 1px solid #ddd;
   box-shadow: 5px 5px 5px #eee;
@@ -30,7 +30,7 @@ pre {
   overflow-x: auto;
 }
 code { background: #f9f9f9; }
-pre code { background: none; }
+pre code { background: none; }*/
 
 /* misc elements */
 img, iframe, video { max-width: 100%; }
