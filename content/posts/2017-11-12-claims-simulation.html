@@ -6,21 +6,21 @@ categories: ["R"]
 tags: ["R", "tuorial", "simulation", "actuarial"]
 draft: false
 image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/c_fill,h_400,w_400/v1510529538/matrix-434035_640_pvewnf.jpg"
-intro: "When I was fresh out of college, my boss asked me to use R to run simulations.  This was my first introduction to R, and I was a little reluctant to get started.  But with some Googling, I overcame the initial frustrations and am now about the biggest R fanboy around.  It turns out that random simulation serves as a nice introdution to R.  This tutorial gives a basic introduction to simulations in R."
+intro: "When I was fresh out of college, my boss asked me to run some simulations in R.  This was my first exposure to R, and I was initially skeptical of its practical usefulness.  But with some Googling and a little perseverence, I overcame the initial frustrations and am now about the biggest R fanboy around.  This tutorial gives a basic introduction to simulations in R using an example from my first R project (simulating insurance claims)."
 ---
 
 
 
-<p>When I was fresh out of college, my boss asked me to run some simulations in R. This was my first introduction to R, and I was a little reluctant to get started. But with some Googling, I overcame the initial frustrations and am now about the biggest R fanboy around. It turns out that random simulation serves as a nice introdution to R because it is relatively simple to produce useful output.</p>
-<p>In this tutorial we will run simulations very similar to the simulations I ran when first learning R (except the code will be a lot nicer as I was a complete noob at that time). Our simulations will model insurance claims.</p>
-<div id="step-1-structure-the-simulation" class="section level3">
-<h3>Step 1: Structure the Simulation</h3>
-<p>Before we execute any R code, we need to describe the problem a little more fully. Let’s imagine that we own an insurance company and we are writing <code>100</code> identical insurance policies next year. We want to measure the losses we expect to pay on claims resulting from these policies. Our actuary told us the probability of a single policy having a claim is <code>10%</code>. Therefore we expect an average of <code>10</code> claims <code>10 = 100 * 0.1</code>. We can use a discrete probability distribution to simulate the frequency (number of claims) based on this <code>10</code> claim average.</p>
-<p>We then need to simulate a loss amount for each claim. We can use a continuous probability distribution for this simulation. Luckily our actuary already told us claim severities follow a lognormal distribution with a log mean of 9 and a log standard deviation of 1.75 (In a real world simulation we could measure how well various distributions fit historical claims experience using several options available in R, but that is beyond the scope of this tutorial).</p>
+<p>When I was fresh out of college, my boss asked me to run some simulations in R. This was my first exposure to R, and I was initially skeptical of its practical usefulness. But with some Googling and a little perseverence, I overcame the initial frustrations and am now about the biggest R fanboy around. It turns out that random simulations served as a nice introdution to R because they allowed me to easily produce useful output and they allowed me to work with R’s data structures without ever even having to load data into R.</p>
+<p>In this tutorial we will run simulations very similar to the simulations I ran when first learning R (except the code will be a lot nicer as I was a complete noob when I wrote the original simulations). Our simulations will model insurance claims.</p>
+<div id="step-1-structure-the-simulation-to-the-problem" class="section level3">
+<h3>Step 1: Structure the Simulation to the Problem</h3>
+<p>Before we execute any R code, we need to describe the problem a little more fully. Let’s imagine that we own an insurance company and we are writing <code>100</code> identical insurance policies next year. We want to measure the losses we expect to pay on claims resulting from these policies. Our actuary tells us the probability of a single policy having a claim is <code>10%</code>. Therefore we expect an average of <code>10</code> claims (<code>10 = 100 * 0.1</code>). We can use a discrete probability distribution to simulate the frequency (number of claims) based on this <code>10</code> claim average.</p>
+<p>We then need to simulate a loss amount for each claim. We can use a continuous probability distribution for this simulation. Luckily our actuary already did her own historical claims analysis and informs us that claim severities follow a lognormal distribution with a log mean of 9 and a log standard deviation of 1.75 (In a real world simulation we could measure how well various distributions fit historical claims experience using several options available in R, but fitting distributions is beyond the scope of this tutorial).</p>
 </div>
 <div id="step-2-run-a-single-frequencyseverity-observation" class="section level3">
 <h3>Step 2: Run a Single Frequency/Severity Observation</h3>
-<p>We will refer to the combination of a frequency simulation and the accompanying severity simulations as an observation. here we run one observation:</p>
+<p>We will refer to the combination of a frequency simulation and the accompanying severity simulations as an observation. Here we run one observation:</p>
 <pre class="r"><code># set the seed so we can reproduce the simulation
 set.seed(1234)
 
@@ -36,7 +36,7 @@ sev &lt;- rlnorm(n = freq, meanlog = 9, sdlog = 1.75)
 # view the results
 sev
 ## [1] 14046.732 15195.521  2256.730  8625.924  9874.455 98712.420</code></pre>
-<p>In the above example our frequency was 6, and our severities for each claim were 14,047, 15,196, 2,257, 8,626, 9,874, 98,712.</p>
+<p>In the above example our frequency was 6, and our severities for each claim were 14,047, 15,196, 2,257, 8,626, 9,874, 98,712. By summing the severities of these 6 claims we arrive at the observation total of 148,712.</p>
 </div>
 <div id="step-3-run-many-observations" class="section level3">
 <h3>Step 3: Run Many Observations</h3>
@@ -146,10 +146,10 @@ summary(obs_agg)
 </div>
 <div id="simulate-multiple-types-of-claims" class="section level5">
 <h5>5.3: Simulate multiple types of claims</h5>
-<p>There is no reason the claims have to all be generated from the same distributions. We could simulate claims based on many different possible frequency and severity distributions. We could also add parameter risk to our frequency and severity selections. We could add deductibles, quota share reinsurance, and a variety of other alterations based on our specific needs.</p>
+<p>There is no reason the claims have to all be generated from the same distributions. We could simulate claims based on many different possible frequency and severity distributions. We could also add parameter risk to our frequency and severity selections. We could add deductibles, quota share reinsurance, and a variety of other alterations based our company’s needs.</p>
 </div>
 </div>
 <div id="conclusion" class="section level3">
 <h3>Conclusion</h3>
-<p>Simulations are a fun way to get started in R, and with a little imagination simulations allow you to answer highly complicated problems that would be impossible to solve directly from math equations and probability density functions.</p>
+<p>Simulations are a fun way to get started in R, and with a little imagination, simulations allow you to answer highly complicated questions that would be impossible to solve directly from math equations and probability density functions.</p>
 </div>

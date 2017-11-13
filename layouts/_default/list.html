@@ -13,7 +13,9 @@
               <div class="col-md-8">
                 <div class="card-body">
                   <h4 class="card-title">{{ .Title }}</h4>
-                  <div class="date">{{ .Date.Format "2006/01/02" }}</div>
+                  <h5>
+                  <span class="date" style="margin-bottom: 20px;">{{ .Date.Format "2006/01/02" }}</span>
+                  by {{ .Params.author }}</h5>
                   <p class="card-text">{{ .Params.intro }}</p>
                   <a href="{{ .URL }}" class="btn btn-primary">Read More</a>
                 </div>
