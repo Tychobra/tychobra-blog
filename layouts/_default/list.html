@@ -4,25 +4,28 @@
     <div class="col-12">
       <ul style="list-style-type: none;">
         {{ range (where .Data.Pages "Section" "!=" "") }}
-        <li style="margin-bottom: 30px;">
-          <div class="card" style=" background-color: #f8f9fa">
-            <div class="row">
-              <div class="col-md-4">
-                <img class="card-img-left" src="{{ .Params.image }}" alt="Card image cap" />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h4 class="card-title">{{ .Title }}</h4>
-                  <h5>
-                  <span class="date" style="margin-bottom: 20px;">{{ .Date.Format "2006/01/02" }}</span>
-                  by {{ .Params.author }}</h5>
-                  <p class="card-text">{{ .Params.intro }}</p>
-                  <a href="{{ .URL }}" class="btn btn-primary">Read More</a>
+          {{ if eq .Params.draft false }}
+            <li style="margin-bottom: 30px;">
+              <div class="card" style=" background-color: #f8f9fa">
+                <div class="row">
+                  <div class="col-md-4">
+                    <img class="card-img-left" src="{{ .Params.image }}" alt="Card image cap" />
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h4 class="card-title">{{ .Title }}</h4>
+                      <h5>
+                        <span class="date" style="margin-bottom: 20px;">{{ .Date.Format "2006/01/02" }}</span>
+                        by {{ .Params.author }}
+                      </h5>
+                      <p class="card-text">{{ .Params.intro }}</p>
+                      <a href="{{ .URL }}" class="btn btn-primary">Read More</a>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </li>
+            </li>
+          {{ end }}
         {{ end }}
         <p>A wealth of blog posts from people across the world can be found at <a href="https://www.r-bloggers.com">R Bloggers</a></p>
       </ul>

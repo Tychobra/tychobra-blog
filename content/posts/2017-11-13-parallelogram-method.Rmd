@@ -1,0 +1,30 @@
+---
+title: "Parallelogram Method Shiny App"
+author: "Andy Merlino"
+date: "2017-11-13"
+draft: true
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/c_limit,h_400,w_400/v1510588322/parallelogram-method_utbvtp.png"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Background
+
+The parallelogram method is an old actuarial method for converting historical premium to current rate levels.  If you are unfamiliar with the method, this post proabably is not for you, but you can learn more [here]() and [here]().
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
