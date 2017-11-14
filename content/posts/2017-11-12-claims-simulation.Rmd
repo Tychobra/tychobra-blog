@@ -58,7 +58,7 @@ library(purrr)
 # number of observations
 n <- 1000
 # generate many frequencies from the poisson distribution
-freqs <- rpois(n = n, lambda = 5)
+freqs <- rpois(n = n, lambda = expected_freq)
 
 # generate `freq` severities.  Each severity represents the ultimate value of 1 claim 
 obs <- purrr::map(freqs, function(freq) rlnorm(n = freq, meanlog = 9, sdlog = 1.75))
