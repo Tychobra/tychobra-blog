@@ -19,7 +19,7 @@ This Shiny app demonstrates the Cox-Ingersoll-Ross interet rate walk and an inte
 
 This method takes a starting interest rate (selected by the user of the app) and applies randomly drawn historical treasury yield changes to that initial rate.  The treasury yield changes can be drawn from either 1, 5, 10, 20, or 30 year treasuries (depending on the user's selection).  The user can also control the historical time period over which the yield changes are drawn from.
 
-I am pretty happy with the output resulting from this method.  Despite the method's naivety, the plotted results _look_ reasonable.  One might have a hard time distinguishing the results of one of these walks from true interest rates over a given time period.
+I am pretty happy with the output resulting from this method.  Despite the method's naivete, the plotted results _look_ reasonable.  One might have a hard time distinguishing the results of one of these walks from true interest rates over a given time period.
 
 ### Cox-Ingersoll-Ross Walk
 
