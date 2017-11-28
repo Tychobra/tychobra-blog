@@ -1,0 +1,33 @@
+---
+title: "Example Shiny App - Interest Rate Walk"
+author: "Andy Merlino"
+date: "2017-11-28"
+categories: ["R"]
+tags: ["R", "Shiny", "random walk", "interest rate", "finance"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/c_fill,g_west,h_400,w_400/v1511880608/interest-rate-walk_e2ognm.png"
+intro: "This Shiny app demonstrates the Cox-Ingersoll-Ross interet rate walk and an interest rate walk conducted using a bootstrap resampling technique.  The code used to create this app is availale on GitHub. Assuming you have the necessary packages installed, you should be able to run this Shiny app on your local computer.  A live version of the app is also available."
+---
+
+
+
+<p>This Shiny app demonstrates the Cox-Ingersoll-Ross interet rate walk and an interest rate walk conducted using a bootstrap resampling technique. The code used to create this app is <a href="https://github.com/Tychobra/shiny-insurance-examples/tree/master/interest-rate-walk">availale on GitHub</a>. Assuming you have the necessary packages installed, you should be able to run this Shiny app on your local computer. A live version of the app is <a href="https://tychobra.shinyapps.io/interest-rate-walk/">available here</a>.</p>
+<div id="bootstrap-resampling-method" class="section level3">
+<h3>Bootstrap Resampling Method</h3>
+<p>This method takes a starting interest rate (selected by the user of the app) and applies randomly drawn historical treasury yield changes to that initial rate. The treasury yield changes can be drawn from either 1, 5, 10, 20, or 30 year treasuries (depending on the user’s selection). The user can also control the historical time period over which the yield changes are drawn from.</p>
+<p>I am pretty happy with the output resulting from this method. Despite the method’s naivety, the plotted results <em>look</em> reasonable. One might have a hard time distinguishing the results of one of these walks from true interest rates over a given time period.</p>
+</div>
+<div id="cox-ingersoll-ross-walk" class="section level3">
+<h3>Cox-Ingersoll-Ross Walk</h3>
+<p>I used the <code>sde::rsCIR()</code> function to generate this walk. I chose to use the CIR parameters as they are described in the <a href="https://en.wikipedia.org/wiki/Cox%E2%80%93Ingersoll%E2%80%93Ross_model">CIR Wikipedia Article</a> which is slightly different from the <code>sde::rsCIR()</code>. I adjusted the parameters for use in <code>sde::rsCIR()</code> in the Shiny <code>server.R</code> file. This Shiny app’s inputs for this walk are:</p>
+<ul>
+<li><strong>a</strong> which controls the speed at which the interest rate reverts to the mean</li>
+<li><strong>b</strong> the mean interest rate</li>
+<li><strong>sigma</strong> which controls the volatility</li>
+</ul>
+<p>No matter which paramters I select, the resulting walks seem far too concentrated around the mean and/or the yields bounce back and forth across the mean at an unconvincing fast frequency. It is very posisible that I am doing something wrong (This is the first time I have used the <code>sde</code> package), and I will investigate further when I have some time. The code is available on GitHub (link above); please reach out, if you see any errors.</p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>Bootstrap resampling of historical treasury yield changes gives a far nicer <em>quick eye test</em> result than the CIR. Do you have a preferred method for conducting interest rate walks? That is probably not a question you hear every day :), but if you do, please let us know in the comments below.</p>
+</div>
