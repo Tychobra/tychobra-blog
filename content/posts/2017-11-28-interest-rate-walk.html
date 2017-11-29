@@ -12,6 +12,7 @@ intro: "This Shiny app demonstrates the Cox-Ingersoll-Ross interest rate walk an
 
 
 <p>This Shiny app demonstrates the Cox-Ingersoll-Ross interest rate walk and an interest rate walk conducted using a bootstrap resampling technique. The code used to create this app is <a href="https://github.com/Tychobra/shiny-insurance-examples/tree/master/interest-rate-walk">available on GitHub</a>. Assuming you have the necessary packages installed, you should be able to run this Shiny app on your local computer. A live version of the app is <a href="https://tychobra.shinyapps.io/interest-rate-walk/">available here</a>.</p>
+<p>Please take a look at the app before reading the rest of this post. For maximum clarity, read the post with the app open and look at the inputs/outputs in the Shiny app as they are described in the post.</p>
 <div id="bootstrap-resampling-method" class="section level3">
 <h3>Bootstrap Resampling Method</h3>
 <p>This method takes a starting interest rate (selected by the user of the app) and applies randomly drawn historical treasury yield changes to that initial rate. The treasury yield changes can be drawn from either 1, 5, 10, 20, or 30 year treasuries (depending on the user’s selection). The user can also control the historical time period over which the yield changes are drawn from.</p>

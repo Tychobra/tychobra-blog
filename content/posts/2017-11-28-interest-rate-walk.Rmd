@@ -13,7 +13,9 @@ intro: "This Shiny app demonstrates the Cox-Ingersoll-Ross interest rate walk an
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This Shiny app demonstrates the Cox-Ingersoll-Ross interest rate walk and an interest rate walk conducted using a bootstrap resampling technique.  The code used to create this app is [available on GitHub](https://github.com/Tychobra/shiny-insurance-examples/tree/master/interest-rate-walk). Assuming you have the necessary packages installed, you should be able to run this Shiny app on your local computer.  A live version of the app is [available here](https://tychobra.shinyapps.io/interest-rate-walk/).
+This Shiny app demonstrates the Cox-Ingersoll-Ross interest rate walk and an interest rate walk conducted using a bootstrap resampling technique.  The code used to create this app is [available on GitHub](https://github.com/Tychobra/shiny-insurance-examples/tree/master/interest-rate-walk). Assuming you have the necessary packages installed, you should be able to run this Shiny app on your local computer.  A live version of the app is [available here](https://tychobra.shinyapps.io/interest-rate-walk/).  
+
+Please take a look at the app before reading the rest of this post.  For maximum clarity, read the post with the app open and look at the inputs/outputs in the Shiny app as they are described in the post. 
 
 ### Bootstrap Resampling Method
 
