@@ -1,7 +1,7 @@
 ---
 title: "Getting Started with R"
 author: "Andy Merlino"
-date: "2017-11-28"
+date: "2017-12-18"
 categories: ["R", "tutorial"]
 tags: ["R", "tutorial"]
 draft: true
@@ -9,4 +9,64 @@ image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1512937311/r-logo_g0t
 intro: "My two cents on getting started with R.  This post is intended for people without programming experience that want to get up and running with R"
 ---
 
-My two cents on getting started with R.  This post is intended for people without programming experience that want to get up and running with R
+If you spend a lot of your day working in Excel, you should learn R.  The aim of this post is to get you up and running as quickly as possible.  This post is intended for people without programming experience.
+
+As a new R user you are embarking on an exciting journey.  If you stick with it, your hard work will be rewarded.  That being said, it will not always be easy.  Learning your first programming language can be frustrating, you need to be curious; ask questions, run experiements, and search for answers.
+
+### First Steps
+
+1. Install [R](https://cran.r-project.org/) and [Rstudio](rstudio).  Rstudio is an Integrated Development Environment (IDE) for R.  You will want to use it.  If you have any trouble with this step, Google it and just try something.  This is your first test in programming.
+
+2. Open Rstudio and print the first few rows of the built in `mtcars` data frame to the console.
+
+```{r}
+head(mtcars)
+```
+
+The `mtcars` data frame is attached with base R.  A data frame is a tabular representation of data like you might see in an Excel spreadsheet.  Much more on data frames to come.
+
+3. Find your working directory, save, and load data
+
+```{r}
+getwd()
+```
+The directory R is pointed at is called the working directory.  You can get the file path of the working directory with `getwd()` and you can set the working directory with `setwd("<path/to/desired/wd>")`
+
+```{r}
+# create a .csv from the mtcars data frame
+write.csv(mtcars, "my-mtcars.csv")
+# read that newly created data frame back into R and assign it to a variable
+# names `my_mtcars`
+my_mtcars <- read.csv("my-mtcars.csv")
+```
+
+`<-` is the assignment operator
+
+4.  Read the first 4 Chapters of [Advanced R](http://adv-r.had.co.nz/)
+
+You might think that a book called Advanced R would be too well advanced for a beginner, but in my opinion, the first 4 chapters are the ideal place for a beginner to get started:
+
+ - [Data Structures](http://adv-r.had.co.nz/Data-structures.html)
+ - [Subsetting](http://adv-r.had.co.nz/Subsetting.html)
+ - [Vocabulary](http://adv-r.had.co.nz/Vocabulary.html)
+ - [Style](http://adv-r.had.co.nz/Style.html)
+ 
+Run all the code blocks in R, and test what happens when you change the code in different ways. 
+
+Follow a style guide.  You do not need to learn all the different ways the same code can be written (at least not while you are still getting started).  Removing the cognitive overhead that comes with poorly formatted code will save you time and frustration.
+
+5.  Use the `dplyr` package
+
+[Introduction to dplyr](http://dplyr.tidyverse.org/articles/dplyr.html)
+
+6.  Join GitHub and create a repository
+
+There are a a ton of resources for [learning git](http://cfss.uchicago.edu/git05.html).  git appears pretty tricky at first glance, but you only need to know the basics (i.e. how to add, commit, push, pull, branch) to use it effectively.  Most git operations can be run using the Rstudio GUI.  Look for the `Git` tab in the box to the upper right in the Rstudio IDE.
+
+Use GitHub to read code written by more experienced R programmers and stay up to date with what is going on in the R development community.  Rstudio has a lot of cool projects on [their GitHub page](https://github.com/rstudio)
+
+7. Read [R4DS](http://r4ds.had.co.nz/)
+
+8. Create your own project
+
+Anything that you are interested in
