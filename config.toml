@@ -13,6 +13,7 @@ footnotereturnlinkcontents = "↩"
     top-learn = "/:filename/"
     top-about = "/:filename/"
     top-shiny = "/:filename/"
+    top-products = "/:filename/"
 
 [[menu.main]]
     name = "Home"
