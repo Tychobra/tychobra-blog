@@ -173,7 +173,12 @@ a.nav-link.active {
 header.masthead {
   text-align: center;
   color: white;
-  background: #0277BD; }
+  background: url(https://res.cloudinary.com/dxqnb8xjb/image/upload/v1518400213/starman_oroujr.webp) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /*background: #0277BD;*/ }
 /* for small screen */
 header.masthead .container {
   padding-top: 90px;
@@ -194,8 +199,8 @@ header.masthead .container {
 
 @media (min-width: 768px) {
   header.masthead .container {
-    padding-top: 150px;
-    padding-bottom: 100px; }
+    padding-top: 75px;
+    padding-bottom: 250px; }
   header.masthead .intro-text .name {
     font-size: 4.75em; }
   header.masthead .intro-text .skills {
