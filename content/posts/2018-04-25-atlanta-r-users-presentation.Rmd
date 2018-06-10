@@ -1,0 +1,24 @@
+---
+title: "Atlanta R Users Presentation"
+author: "Andy Merlino"
+date: "6/10/2018"
+categories: ["R"]
+tags: ["R", "tuorial", "shiny", "machine learning", "deep learning"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1528671708/rusers_presentation_cover_img_h0hty0.png"
+intro: "These are the slides from my presentation at the April Atlanta R User meetup.  There are not many words on the slides, so you won't be able to follow the presentation by flipping through the slides.  I nonetheless wanted to share the slides because they use the ioslides Rmarkdown template to directly embed Shiny applications into the presentation.  There are Shiny apps on slides 5 and 6.  Being able to embed Shiny apps in ioslides is an interesting feature available and have not seen many examples of it in the wild."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+These are [the slides](https://tychobra.shinyapps.io/atlanta_r_users_presentation_2018_04_17/#5) from my presentation at the April Atlanta R User meetup.  
+
+There are not many words on the slides, so you won't be able to follow the presentation by flipping through the slides.  I nonetheless wanted to share them because the presentation uses the ioslides Rmarkdown template to directly embed Shiny applications into the presentation.  There are Shiny apps on slides 5 and 6.  Being able to embed Shiny apps in ioslides is an interesting feature and have not seen many examples of it in the wild.  Here is [the code](https://github.com/Tychobra/tychobra_presentations/tree/master/atlanta_r_users_presentation_2018_04_17) used to create the presentation. 
+
+The Shiny application on sheet 5 uses the `xgboost` R package to predict payments on individual insurance claims.  
+
+The 2nd Shiny application, on sheet 6, uses the `keras` R package to predict the digit from images of handwritten digits.  This is a very simple deep learning application.
+
+Slides 2 and 3 are pictures of my newly born niece!
