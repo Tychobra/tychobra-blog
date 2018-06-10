@@ -1,12 +1,12 @@
 ---
 title: "Atlanta R Users Presentation"
 author: "Andy Merlino"
-date: "6/10/2018"
+date: "2018-06-10"
 categories: ["R"]
-tags: ["R", "tuorial", "shiny", "machine learning", "deep learning"]
+tags: ["R", "presentation", "shiny", "machine learning", "deep learning"]
 draft: false
-image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1528671708/rusers_presentation_cover_img_h0hty0.png"
-intro: "These are the slides from my presentation at the April Atlanta R User meetup.  There are not many words on the slides, so you won't be able to follow the presentation by flipping through the slides.  I nonetheless wanted to share the slides because they use the ioslides Rmarkdown template to directly embed Shiny applications into the presentation.  There are Shiny apps on slides 5 and 6.  Being able to embed Shiny apps in ioslides is an interesting feature available and have not seen many examples of it in the wild."
+image: "http://res.cloudinary.com/dxqnb8xjb/image/upload/v1528672705/presentation_cover_2_t2sm8y.png"
+intro: "These are the slides from my presentation at the April Atlanta R User meetup.  I wanted to share the slides because they use the ioslides Rmarkdown template to directly embed Shiny applications into the presentation, and I found this to be pretty cool.  There are Shiny apps on slides 5 and 6."
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 These are [the slides](https://tychobra.shinyapps.io/atlanta_r_users_presentation_2018_04_17/#5) from my presentation at the April Atlanta R User meetup.  
 
-There are not many words on the slides, so you won't be able to follow the presentation by flipping through the slides.  I nonetheless wanted to share them because the presentation uses the ioslides Rmarkdown template to directly embed Shiny applications into the presentation.  There are Shiny apps on slides 5 and 6.  Being able to embed Shiny apps in ioslides is an interesting feature and have not seen many examples of it in the wild.  Here is [the code](https://github.com/Tychobra/tychobra_presentations/tree/master/atlanta_r_users_presentation_2018_04_17) used to create the presentation. 
+There are not many words on the slides, so you won't be able to follow the presentation by flipping through the slides.  I nonetheless wanted to share them because the presentation uses the ioslides Rmarkdown template to directly embed Shiny applications into the presentation.  There are Shiny apps on slides 5 and 6.  Here is [the code](https://github.com/Tychobra/tychobra_presentations/tree/master/atlanta_r_users_presentation_2018_04_17) used to create the presentation. 
 
 The Shiny application on sheet 5 uses the `xgboost` R package to predict payments on individual insurance claims.  
 
