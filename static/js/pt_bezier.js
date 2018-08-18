@@ -1,6 +1,6 @@
 
 
-Pts.quickStart( "#pt", "#123" );
+Pts.quickStart( "#pt", "#000" );
 
 //// Demo code starts (anonymous function wrapper is optional) ---
 
