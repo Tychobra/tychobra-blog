@@ -13,7 +13,7 @@ intro: "The version 0.1.0 release brings snackbar notifications to the package. 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Version 0.1.0 of the shinyFeedback package is now available on CRAN.  Your can install the latest version by running:
+Version 0.1.0 of the shinyFeedback package is now available on CRAN.  You can install the latest version by running:
 
 ```{r, eval = FALSE}
 install.packages("shinyFeedback")
