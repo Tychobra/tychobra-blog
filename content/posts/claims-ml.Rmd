@@ -1,0 +1,136 @@
+---
+title: "Machine Learning to Predict Insurance Claims: Part 1"
+author: "Andy Merlino"
+date: "2018-09-10"
+categories: ["R"]
+tags: ["R", "shiny", "machine learning"]
+draft: true
+image: ""
+intro: ""
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This blog post describes the basic ideas behind the Claims ML Shiny application.  The Claims ML Shiny application predicts annual payments on individual insurance claims for 10 years into the future.  In this post we will use similar machine learning and simulation techniques to predict the claim status (open or closed) and payment for 1 claim for 1 year into the future.  First a little background: 
+
+### Background
+
+Insurance is the business of selling promises (insurance policies) to pay for potential future claims.  After insurance policies are sold, it can be many years before a claim is reported to the insurer and many more years before all payments are made on the claim and the claim is settled.  Insurers carry a liabiliy on their balance sheet to pay for these reported and unreported claims on previosuly sold policies.  This liability is known as the reserve.  Since the reserve is a liability for uncertain future payments, it's exact value is not known and must be estimated.  Insurers are very interested in estimating their reserve as accurately as possible.  
+
+Traditionally insurers estimate their reserve by grouping similar claims and exposurers together and analyzing historical losses across the different groups.  They apply the historical loss patterns of the older claims (with adjustments) to the younger claims and exposures to estimate the reserve.  Of course this does not produce an accurate picture of individual claim behavior, but in aggregate it can accurately estimate the expected value of the reserve.  However, the grouping methodologies do a poor job of estimating confidence levels.  Poorly estimating confidence level is a significant shortcoming as insurers are often more concerned with the largest loss at a 99.9% confidence level than they are with the mean.
+
+Rather than using the traditional manual grouping methods, we predict payments on individual insurance claims using machine learning in R.  Our goal is to model individual claim behaviour as accurately as possible.  We want the claim predictions from our model to be indistinguishable from actual claims.  If we can achieve this goal, we can come up with expected values and confidence levels for individual claims, and we aggregate the individual claims to determine the expected value and confidence levels for the total reserve.  There are many other valuable insights ae can gather from our individual claim predictions, but let's not get ahead of ourselves.  Let's start with a simple example.
+
+### Simple Example
+
+We will look at reported Workers' Compensation claims.  We will not be predicting losses on unreported claims (i.e. for our predictions, we already have at least 1 observation of the claim and we will predict future payments on this existing/reported claim). 
+
+So our simplified model for 1 claims is:
+
+![](http://res.cloudinary.com/dxqnb8xjb/image/upload/v1536411529/model_single_claim_01_bfudtp.png)
+
+We start with data for a single claim.  Our claim is 1 year old and our goal is to predict the payments in year 2.  We do this by feeding the claim to our payment model (which we will train laater), and the model predicts the claim payments.  Simple enough right?  But we also said we wanted to predict the status ("open" or "closed") of the claim.  So let's expand our model prediction flow to look like this:
+
+![Simple Payment Prediction]()
+
+Now we fist predict the status and then we use the predicted status as a predictor variable in the payment model.  Let's start by predicting the status, and before we do that we need to train the model.
+
+Step 1: Load the data
+
+We have 3,297 claims.  Each claim claim has 11 variables.  
+
+```{r}
+data_training <- readRDS("../../static/data/model_fit_data.RDS")
+
+head(data_training)
+```
+
+Step 2: Fit the Status Model
+
+Our status model is a logistic regression, and we train is with the `caret` package.  We use the step AIC method to perform feature selection.
+
+```{r train_status_model, warning = FALSE, cache = TRUE}
+library(caret)
+
+tr_ctrl <- caret::trainControl(
+  method = "none",
+  classProbs = TRUE,
+  summaryFunction = twoClassSummary
+)
+
+status_model_fit <- caret::train(
+  status_2 ~ . - claim_num - doa - paid_incre_2,
+  data = data_training,
+  method = "glmStepAIC",
+  preProc = c("center", "scale"),
+  trControl = tr_ctrl,
+  metric = "ROC",
+  trace = FALSE
+)
+
+summary(status_model_fit)
+```
+
+Plot the status
+
+
+
+Step 3: Predict the probability the claim is open
+
+Now that we have trained the model we can predit that the probability that the claim is open.
+
+```{r}
+
+predict(status_model_fit, newdata = , type = "prob")
+```
+
+```{r logistic_plot, eval = FALSE}
+plot_dat <- dat %>%
+  mutate(
+    prob_open = round(prob_open, 3),
+    pd_total = format(round(pd_total, 0), big.mark = ","),
+    case_total = format(round(case_total, 0), big.mark = ",")
+  )
+
+g <- ggplot(plot_dat, aes(x = logit, y = status_act_num)) +
+  geom_point(
+    color = "red", 
+    position = position_jitter(height = 0.075, width = 0.075),
+    size = 0.5,
+    alpha = 0.2,
+    aes(label = claim_num, label0 = prob_open, label1 = pd_total, label2 = case_total, label3 = status)) +
+  geom_smooth(
+    method = "glm", 
+    method.args = list(family = "binomial"),
+    size = 1) +
+  ylab("Probability Open") +
+  xlab("Logit Odds") +
+  ggtitle("Probability 1 Year Old Claim Open at Age 2")
+  
+ggplotly(
+  g,
+  tooltip = c("label", "label0", "label1", "label2", "label3", "x")
+)
+
+```
+
+
+Step 4: Use probility of being open to simulate the status
+
+Since we want to use the status at time 2 as a predictor variable in our
+
+```{r}
+
+```
+
+![Simple Status and Payment Prediction](https://res.cloudinary.com/dxqnb8xjb/image/upload/v1536410605/model_single_claim_1_b8ijjf.png)
+
+This Shiny app predicts future payments on existing individual insurance claims.  For each claim we predict annual payments for each of the next 10 years.  We can add up these payments to get the cumulative amout paid per claim over the 10 year period.  Also, because we are predicting individual claims, we can apply various per claim retention limits to compare losses under alternate risk rentention programs.
+
+
+
+
+
+
