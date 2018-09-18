@@ -58,3 +58,7 @@ thead, tfoot, tr:nth-child(even) { background: #eee }
     width: 150px;
     margin: auto;
 }
+
+table {
+  white-space: nowrap;
+}
