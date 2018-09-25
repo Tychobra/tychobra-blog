@@ -5,7 +5,7 @@ date: "2018-06-10"
 categories: ["R"]
 tags: ["R", "presentation", "shiny", "machine learning", "deep learning"]
 draft: false
-image: "http://res.cloudinary.com/dxqnb8xjb/image/upload/v1528672705/presentation_cover_2_t2sm8y.png"
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1528672705/presentation_cover_2_t2sm8y.png"
 intro: "These are the slides from my presentation at the April Atlanta R User meetup.  I wanted to share the slides because they use the ioslides Rmarkdown template to directly embed Shiny applications into the presentation, and I found this to be pretty cool.  There are Shiny apps on slides 5 and 6."
 ---
 
