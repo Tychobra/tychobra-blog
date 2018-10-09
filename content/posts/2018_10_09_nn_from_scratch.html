@@ -1,0 +1,182 @@
+---
+title: "How to build your own Neural Network from scratch in R"
+author: "Andy Merlino"
+date: "2018-10-09"
+categories: ["R"]
+tags: ["R", "AI", "neural network", "tutorial"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1539018324/nn_diagram_d7gs7e.png"
+intro: "Last week I ran across a great post on creating a neural network in Python.  It walks through the very basics of neural networks and creates a working toy example using Python.  I enjoyed the simple hands on approach the author used to communicate both the narrative and the code, and I was interested to see how we might make the same model using R. "
+output:
+  html_document
+---
+
+
+
+<p>Last week I ran across <a href="https://towardsdatascience.com/how-to-build-your-own-neural-network-from-scratch-in-python-68998a08e4f6">this great post on creating a neural network in Python</a>. It walks through the very basics of neural networks and creates a working example using Python. I enjoyed the simple hands on approach the author used, and I was interested to see how we might make the same model using R.</p>
+<p>In this post we recreate the above-mentioned Python neural network from scratch in R. Our R refactor is focused on simplicity and understandability; we are not concerned with writing the most efficient or elegant code.</p>
+<p>Our very basic neural network will have 2 layers. Below is a diagram of the network:</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1539018324/nn_diagram_d7gs7e.png" /></p>
+<p>For background information, please read over the Python post. It may be helpful to open the Python post and compare the chunks of Python code to the corresponding R code below. The full Python code to train the model is not available in the body of the Python post, but fortunately it is included in the comments; so, scroll down on the Python post if you are looking for it.</p>
+<p>Let’s get started with R!</p>
+<div id="create-training-data" class="section level3">
+<h3>Create Training Data</h3>
+<p>First, we create the data to train the neural network.</p>
+<pre class="r"><code># predictor variables
+X &lt;- matrix(c(
+  0,0,1,
+  0,1,1,
+  1,0,1,
+  1,1,1
+),
+  ncol = 3,
+  byrow = TRUE
+)
+
+# observed outcomes
+y &lt;- c(0, 1, 1, 0)
+
+# print the data so we can take a quick look at it
+cbind(X, y)</code></pre>
+<pre><code>##            y
+## [1,] 0 0 1 0
+## [2,] 0 1 1 1
+## [3,] 1 0 1 1
+## [4,] 1 1 1 0</code></pre>
+<p>The above data contains 4 observations; each row is an observation. The 3 columns on the left (i.e. the <code>X</code> object) are used with the observed outcomes (“y” column on the right) to train the model. Once our model is trained, we will be able to pass new predictor variables (i.e. new rows of <code>X</code>) to the model and predict y values that have not yet been observed.</p>
+</div>
+<div id="create-an-object-to-store-the-state-of-our-neural-network" class="section level3">
+<h3>Create an object to store the state of our neural network</h3>
+<p>Now that we have our data, we need to create the model. First, we create an object to store the state of the model.</p>
+<pre class="r"><code># generate a random value between 0 and 1 for each
+# element in X.  This will be used as our initial weights
+# for layer 1
+rand_vector &lt;- runif(ncol(X) * nrow(X))
+
+# convert above vector into a matrix
+rand_matrix &lt;- matrix(
+  rand_vector,
+  nrow = ncol(X),
+  ncol = nrow(X),
+  byrow = TRUE
+)
+
+# this list stores the state of our neural net as it is trained
+my_nn &lt;- list(
+  # predictor variables
+  input = X,
+  # weights for layer 1
+  weights1 = rand_matrix,
+  # weights for layer 2
+  weights2 = matrix(runif(4), ncol = 1),
+  # actual observed
+  y = y,
+  # stores the predicted outcome
+  output = matrix(
+    rep(0, times = 4),
+    ncol = 1
+  )
+)</code></pre>
+</div>
+<div id="activation-function" class="section level3">
+<h3>Activation Function</h3>
+<p>Now that we have some data to work with (<code>X</code> and <code>y</code>) and a list to store the state of our model (<code>my_nn</code>), we can put together the functions to train our model.</p>
+<p>Here we define the activation function. The activation function converts a layer’s inputs to outputs. The outputs are then passed to the next layer. The <em>Sigmoid</em> activation function is used in our model.</p>
+<pre class="r"><code>#&#39; the activation function
+sigmoid &lt;- function(x) {
+  1.0 / (1.0 + exp(-x))
+}
+
+#&#39; the derivative of the activation function
+sigmoid_derivative &lt;- function(x) {
+  x * (1.0 - x)
+}</code></pre>
+</div>
+<div id="loss-function" class="section level3">
+<h3>Loss Function</h3>
+<p>The loss function is used to determine the goodness of fit of the model. We use the <em>Sum-of-Squares Error</em> as our loss function.</p>
+<pre class="r"><code>loss_function &lt;- function(nn) {
+  sum((nn$y - nn$output) ^ 2)
+}</code></pre>
+<p>The goal of the neural network is to find weights for each layer that minimize the result of the loss function.</p>
+</div>
+<div id="feedforward-and-back-propagation" class="section level3">
+<h3>Feedforward and Back Propagation</h3>
+<p>In order to minimize the loss function we perform feedforward and backpropagation. Feedforward applies the activation function to the layers and produces a predicted outcome.</p>
+<pre class="r"><code>feedforward &lt;- function(nn) {
+
+  nn$layer1 &lt;- sigmoid(nn$input %*% nn$weights1)
+  nn$output &lt;- sigmoid(nn$layer1 %*% nn$weights2)
+
+  nn
+}</code></pre>
+<p>Backpropagation takes the predicted outcome, resulting from the feedforward step, and adjust the layer weights to reduce the loss function.</p>
+<pre class="r"><code>backprop &lt;- function(nn) {
+
+  # application of the chain rule to find derivative of the loss function with 
+  # respect to weights2 and weights1
+  d_weights2 &lt;- (
+    t(nn$layer1) %*%
+    # `2 * (nn$y - nn$output)` is the derivative of the sigmoid loss function
+    (2 * (nn$y - nn$output) *
+    sigmoid_derivative(nn$output))
+  )
+
+  d_weights1 &lt;- ( 2 * (nn$y - nn$output) * sigmoid_derivative(nn$output)) %*% 
+    t(nn$weights2)
+  d_weights1 &lt;- d_weights1 * sigmoid_derivative(nn$layer1)
+  d_weights1 &lt;- t(nn$input) %*% d_weights1
+  
+  # update the weights using the derivative (slope) of the loss function
+  nn$weights1 &lt;- nn$weights1 + d_weights1
+  nn$weights2 &lt;- nn$weights2 + d_weights2
+
+  nn
+}</code></pre>
+</div>
+<div id="train-the-model" class="section level3">
+<h3>Train the Model</h3>
+<p>We are now ready to train our model. The training process repeatedly calls <code>feedforward()</code> and <code>backprop()</code> in order to reduce the loss function.</p>
+<pre class="r"><code># number of times to perform feedforward and backpropagation
+n &lt;- 1500
+
+# data frame to store the results of the loss function.
+# this data frame is used to produce the plot in the 
+# next code chunk
+loss_df &lt;- data.frame(
+  iteration = 1:n,
+  loss = vector(&quot;numeric&quot;, length = n)
+)
+
+for (i in seq_len(1500)) {
+  my_nn &lt;- feedforward(my_nn)
+  my_nn &lt;- backprop(my_nn)
+
+  # store the result of the loss function.  We will plot this later
+  loss_df$loss[i] &lt;- loss_function(my_nn)
+}
+
+# print the predicted outcome next to the actual outcome
+data.frame(
+  &quot;Predicted&quot; = round(my_nn$output, 3),
+  &quot;Actual&quot; = y
+)</code></pre>
+<pre><code>##   Predicted Actual
+## 1     0.017      0
+## 2     0.985      1
+## 3     0.972      1
+## 4     0.025      0</code></pre>
+<p>Above you can see that the predicted values are fairly close to the actual observed values.</p>
+<p>The plot below displays the result of the loss function as the model is trained. The objective of the model training is to minimize the result of the loss function (Y axis), and we can see that as we progress in iterations (X axis), the result of the loss function approaches zero.</p>
+<pre class="r"><code># plot the cost
+library(ggplot2)
+
+ggplot(data = loss_df, aes(x = iteration, y = loss)) +
+  geom_line()</code></pre>
+<p><img src="/posts/2018_10_09_nn_from_scratch_files/figure-html/plot-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>The Python post was a fun and informative way to explore how the most basic steps in neural networks fit together. Converting the Python to R gave me additional insights and understanding into the inner workings of the Python code.</p>
+<p>The example neural network is extremely simple, and the data/prediction is not particularly meaningful, but I enjoyed walking through the basic fundamentals of a neural network. I hope you enjoyed it as well. Thanks for reading.</p>
+</div>
