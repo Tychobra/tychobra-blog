@@ -2,7 +2,7 @@
 <div class="container wrapper">
   <div class="row">
     <div class="col-12">
-      <ul style="list-style-type: none;">
+      <ul style="list-style-type: none; padding-left: 0;">
         {{ range (where .Data.Pages "Section" "!=" "") }}
           {{ if eq .Params.draft false }}
             <li style="margin-bottom: 30px;">
