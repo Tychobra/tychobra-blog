@@ -6,7 +6,7 @@ categories: ["R"]
 tags: ["R", "tuorial", "simulation", "actuarial"]
 draft: false
 image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/c_fill,h_400,w_400/v1510529538/matrix-434035_640_pvewnf.jpg"
-intro: "When I was fresh out of college, my boss asked me to run some simulations in R.  This was my first exposure to R, and I was initially skeptical of its practical usefulness.  But with some Googling and a little perseverence, I overcame the initial frustrations and am now about the biggest R fanboy around.  This tutorial gives a basic introduction to simulations in R using an example from my first R project (simulating insurance claims)."
+intro: "When I was fresh out of college, my boss asked me to run simulations in R.  This was my first exposure to R.  As someone with no programming experience, getting started was difficult.  But with some Googling and a little perseverance, I worked through the initial frustration and am now a huge fan of R.  I hope this tutorial helps a beginning R user somewhere overcome one or two frustrations getting started.  This tutorial gives a basic introduction to simulations in R using an example from my first R project (simulating insurance claims)."
 ---
 
 ```{r setup, include=FALSE}
@@ -14,9 +14,9 @@ options(scipen=999)
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-When I was fresh out of college, my boss asked me to run some simulations in R.  This was my first exposure to R, and I was initially skeptical of its practical usefulness.  But with some Googling and a little perseverence, I overcame the initial frustrations and am now about the biggest R fanboy around.  It turns out that random simulations served as a nice introdution to R because they allowed me to easily produce useful output and they allowed me to work with R's data structures without ever even having to load data into R.
+When I was fresh out of college, my boss asked me to run simulations in R.  This was my first exposure to R.  As someone with no programming experience, getting started was difficult.  But with some Googling and a little perseverance, I worked through the initial frustration and am now a huge fan of the language.  I hope this tutorial helps a beginning R user somewhere overcome one or two frustrations getting started.
 
-In this tutorial we will run simulations very similar to the simulations I ran when first learning R (except the code will be a lot nicer as I was a complete noob when I wrote the original simulations).  Our simulations will model insurance claims.
+This tutorial gives a basic introduction to simulations in R using an example from my first R project (simulating insurance claims).  Random simulations are a nice beginner R project because they allow you to produce data and work with R's data structures without ever even having to load data into R.
 
 ### Step 1: Structure the Simulation to the Problem
 
