@@ -1,0 +1,133 @@
+---
+title: "PowerPoint Report Generation with Shiny"
+author: "Richard Hill and Andy Merlino"
+date: "2019-07-29"
+categories: ["R", "Shiny"]
+tags: ["R", "Shiny", "Rmarkdown", "Excel", "openxlsx", "report"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349704/cover_pptx_x52eg9.png"
+intro: "Create PowerPoint Reports with R and Shiny."
+output:
+  html_document
+---
+
+
+
+<p>In this post we generate a PowerPoint report from a Shiny app. This is Part 2 from the 3-post series about generating reports with Shiny. Part 1 covered <a href="https://www.tychobra.com/posts/2019_07_22_excel_report_generation/">Excel Report Generation with Shiny</a>. See part 1 for a quick intro and description of <a href="https://tychobra.shinyapps.io/claims-dashboard/">the Shiny app</a> that can generate Excel, PowerPoint, and PDF reports.</p>
+<div id="powerpoint-report" class="section level2">
+<h2>PowerPoint Report</h2>
+<p>These are the slides from the PowerPoint report in our Shiny app:</p>
+<p><image src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349704/cover_pptx_x52eg9.png" style="border: 2px solid black"/>
+<image src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349724/exhibit_1_pptx_bqxsah.png" style="border: 2px solid black"/>
+<image src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349733/exhibit_2_pptx_wn5l0v.png" style="border: 2px solid black"/></p>
+<p><a href="https://github.com/Tychobra/shiny-insurance-examples/blob/master/basic-insurer-dashboard/example%20reports/claims-report-as-of-2019-06-24.pptx">Click here</a> to download the PowerPoint file from GitHub.</p>
+<div id="creating-a-basic-powerpoint-with-r" class="section level3">
+<h3>Creating a Basic PowerPoint with R</h3>
+<p>We use the <a href="https://github.com/davidgohel/officer"><code>officer</code></a> R package to create the PowerPoint. <code>officer</code> connects R to Microsoft Word and PowerPoint (similar to how <a href="https://github.com/awalker89/openxlsx">openxlsx</a> connects R to Excel). We use the <a href="https://github.com/davidgohel/flextable">flextable</a> package to format our PowerPoint tables.</p>
+<p>To begin creating the PowerPoint, we assign a blank PowerPoint to the <code>ppt_report</code> variable:</p>
+<pre class="r"><code>library(officer)
+
+ppt_report &lt;- read_pptx()</code></pre>
+<p>We can now create a PowerPoint file from our <code>ppt_report</code> object by using the generic <code>print()</code> function and setting <code>target = "&lt;you file name&gt;"</code> as below:</p>
+<pre class="r"><code>print(ppt_report, target = &quot;my_ppt_file.pptx&quot;)
+# run `?print.rpptx` for more info on the above function</code></pre>
+<p>The PowerPoint we created above is completely empty, so it’s not terribly interesting. Let’s add a basic title page:</p>
+<pre class="r"><code>library(dplyr)
+
+ppt_report &lt;- ppt_report %&gt;%
+  add_slide(
+    layout = &quot;Title Slide&quot;, 
+    master = &quot;Office Theme&quot;
+  ) %&gt;%
+  ph_with_text(
+    type = &quot;ctrTitle&quot;, 
+    str = c(
+      &quot;Example Client Name&quot;,
+      &quot;Workers&#39; Compensation Claims Report&quot;
+    )
+  )
+
+print(ppt_report, target = &quot;my_ppt_file.pptx&quot;)</code></pre>
+<p>The new version of our PowerPoint now has a title page.</p>
+<p>You can specify the slide theme with the <code>master</code> argument to <code>add_slide()</code> (“Office Theme” in our above example). All the layouts available with PowerPoint can be set with the <code>layout</code> argument. e.g. you can make slides with all the following layouts:</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349682/slide_names_pptx_g4u09c.png" align="center" /></p>
+</div>
+<div id="using-flextables" class="section level3">
+<h3>Using Flextables</h3>
+<p><code>officer</code> can add tables, but it does not have many table formatting options. For more customized tables we use the <code>flextable</code> package.</p>
+<p>Check out the <a href="https://github.com/Tychobra/shiny-insurance-examples/blob/abc7811dea9857c16b610da9f21b834888372351/basic-insurer-dashboard/server/04-report-srv/04-powerpoint-srv.R#L15">code here</a> to see the full formatting of the PowerPoint in our Shiny app.</p>
+</div>
+<div id="demo-app" class="section level3">
+<h3>Demo App</h3>
+<p>Below is a complete but very simple Shiny app that can generate a PowerPoint report. Simply run the following directly in your R console to run the app yourself!</p>
+<pre class="r"><code>library(shiny)
+library(officer)
+library(flextable)
+library(dplyr)
+  
+my_table &lt;- data.frame(
+  Name = letters[1:4],
+  Age = seq(20, 26, 2),
+  Occupation = LETTERS[15:18],
+  Income = c(50000, 20000, 30000, 45000)
+)
+    
+ui &lt;- fluidRow(
+  column(
+    width = 12,
+    align = &quot;center&quot;,
+    tableOutput(&quot;data&quot;),
+    br(),
+    downloadButton(&quot;download_powerpoint&quot;, &quot;Download Data to PowerPoint&quot;)
+  )
+)
+    
+server &lt;- function(input, output) {
+  output$data &lt;- renderTable({
+    my_table
+  })
+  
+  output$download_powerpoint &lt;- downloadHandler(
+    filename = function() {  
+      &quot;employee_data.pptx&quot;
+    },
+    content = function(file) {
+      flextable_prep &lt;- flextable(my_table) %&gt;% 
+        colformat_num(col_keys = c(&quot;Age&quot;, &quot;Income&quot;), digits = 0) %&gt;% 
+        width(width = 1.25) %&gt;% 
+        height_all(height = 0.35) %&gt;% 
+        theme_zebra() %&gt;% 
+        align(align = &quot;center&quot;, part = &quot;all&quot;)
+      
+      example_pp &lt;- read_pptx() %&gt;% 
+        add_slide(layout = &quot;Title Slide&quot;, master = &quot;Office Theme&quot;) %&gt;% 
+        ph_with_text(
+          type = &quot;ctrTitle&quot;,
+          str = &quot;Employee Data&quot;
+        ) %&gt;% 
+        ph_with(
+          location = ph_location_type(type = &quot;subTitle&quot;),
+          value = &quot;Company 2019 Report&quot;
+        ) %&gt;% 
+        add_slide(layout = &quot;Title and Content&quot;, master = &quot;Office Theme&quot;) %&gt;% 
+        ph_with_text(
+          type = &quot;title&quot;,
+          str = &quot;2019 Data&quot;
+        ) %&gt;% 
+        ph_with_flextable_at(
+          value = flextable_prep,
+          left = 2.5,
+          top = 2
+        )
+      
+      print(example_pp, target = file)
+    }
+  )
+}
+      
+shinyApp(ui, server)</code></pre>
+<p>Which will download this basic PowerPoint:</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349754/demo_app_1_pptx_gursx9.png" /></p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1564349762/demo_app_2_pptx_nzsmb2.png" /></p>
+</div>
+</div>
