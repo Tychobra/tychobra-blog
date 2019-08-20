@@ -19,3 +19,11 @@ Every once ina while you might run into errors and need to rebuild the site from
 
 blogdown::build_site()
 ```
+
+
+### File Organization
+
+ - "layouts/" - contains the html for the website
+ - "content/posts/" - contains the markdown documents used to generate the blog posts
+ 
+
