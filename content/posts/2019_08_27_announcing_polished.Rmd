@@ -1,0 +1,36 @@
+---
+title: "Polished - Modern Authentication for Shiny"
+author: "Andy Merlino and Peter Myers"
+date: "2019-08-27"
+categories: ["R", "Shiny", "Polished"]
+tags: ["R", "Shiny", "Polished"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1566775739/polished_hex_qlnmcc.png"
+intro: "Polished is a new R package that adds modern user authentication and user administration to your Shiny apps.  Polished comes with many of the authentication features required by today's web apps (e.g. user registration, password reset, email verification, role based authorization, etc.).  Polished is available under the permissive MIT license!"
+output:
+  html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We are excited to announce polished.  Polished is a new R package that adds modern user authentication and user administration to your Shiny apps.  Polished comes with many of the authentication features required by today's web apps (e.g. user registration, password reset, email verification, role-based authorization, etc.).  Polished is available under the permissive MIT license!
+
+<br/>
+
+<div style="text-align: center">
+<iframe width="650" height="360" src="https://www.youtube.com/embed/g7I9Y2VQ-2Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+<br/>
+
+Shiny empowers data science teams to communicate their analyses as interactive web apps.  Once these applications are made available on the web, administrators often need user management and authentication. Polished adds this layer of shine to your existing applications.  In addition to authentication and user administration, Polished also provides analytics about the usage of your app.
+
+Polished uses single-sign-on across multiple Shiny apps.  This means you use the same email and password to sign into all your Shiny apps.  Since password reset and email verification are handled by polished, as an administrator of Shiny apps, you will never touch or even know your users' passwords.
+
+Polished uses a serverless architecture for authentication and data storage. This means no server management for you, and no additional server infrastructure outside of your Shiny application.  It also means you can deploy polished on any server that can host Shiny (e.g. on-premise, to a cloud provider, or using a Shiny hosting service like shinyapps.io).
+
+You integrate polished with your Shiny app by setting up a polished configuration folder and making a few minor modifications directly to your Shiny app R code.  Documentation on the setup process can be found [here](https://github.com/Tychobra/polished/blob/master/README.md).
+
+We can't wait to see what people build with polished, and we'd love to help you and your team integrate it. Check out the [webpage](https://polished.tychobra.com) or browse, clone, or fork the code on [Github.](https://github.com/Tychobra/polished)
