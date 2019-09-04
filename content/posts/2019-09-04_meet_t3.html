@@ -1,0 +1,43 @@
+---
+title: "Meet T3 - Tychobra Time Tracker"
+author: "Peter Myers and Andy Merlino"
+date: "2019-09-04"
+categories: ["R", "Shiny", "T3"]
+tags: ["R", "Shiny", "T3"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1567597184/t3_dash_h6zorr.png"
+intro: "At Tychobra, like many consulting businesses, we have multiple projects for multiple clients being worked on by multiple developers. To keep everything tracked to double precision, and because we love the taste of dog food, we built our own time tracking system using Shiny and our R package for authentication, Polished"
+output:
+  html_document
+---
+
+
+
+<div id="raison-detre" class="section level3">
+<h3>Raison d’être</h3>
+<p>At Tychobra, like many consulting businesses, we have multiple projects for multiple clients being worked on by multiple developers. To keep everything tracked to double precision, and because we love the taste of dog food, we built our own time tracking system using Shiny and our R package for authentication, <a href="https://www.tychobra.com/posts/2019_08_27_announcing_polished/">Polished</a>.</p>
+</div>
+<div id="how-it-works" class="section level3">
+<h3>How it works</h3>
+<div style="text-align: center">
+<iframe width="650" height="360" src="https://www.youtube.com/embed/t6e6d7Uq1Wo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<p><br/></p>
+<div id="dashboard" class="section level4">
+<h4>Dashboard</h4>
+<p>The dashboard presents several views of the data, most prominently a bar chart that can be broken down by client or by project. Below the chart, a heat map similar to what you’d see on GitHub gives an at-a-glance overview of hours worked per day. If you’re more of an Arabic numeral fan, a tabular display below the heat map contains the same information as the bar chart. Each of these outputs can be filtered to a date range, client, and/or project using the inputs on the right side.</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1567597184/t3_dash_h6zorr.png" /></p>
+<p><br/></p>
+</div>
+<div id="time-entry" class="section level4">
+<h4>Time Entry</h4>
+<p>The left sidebar contains a link to the time entry tab. With a familiar spreadsheet interface, each row represents a record of billable time with a minimum of 15 minutes and a maximum depending on how much coffee is still available in the office. Client and project codes are tab-completable, populated from the internal database. As you’d expect, “Save Changes” persists the data and automatically updates the dashboard. “Discard Changes” wipes away any incorrect data entry, as can happen when your attention-demanding cat “helps” you type.</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1567597318/t3_time_entry_bpanab.png" /></p>
+<p><br/></p>
+</div>
+</div>
+<div id="try-it-yourself" class="section level3">
+<h3>Try it yourself!</h3>
+<p>We’ve open sourced this project, with the code on <a href="https://github.com/Tychobra/t3_demo">GitHub</a> and a <a href="http://tychobra.shinyapps.io/t3_demo/">live test instance</a> for you to put in some hours. Sadly, we can’t cut you a check until you come work with us at <a href="https://www.tychobra.com">Tychobra!</a></p>
+</div>
