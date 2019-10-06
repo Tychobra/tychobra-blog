@@ -10,7 +10,7 @@ footnotereturnlinkcontents = "↩"
 
 [permalinks]
     post = "/post/:year/:month/:day/:slug/"
-    top-learn = "/:filename/"
+    #top-learn = "/:filename/"
     top-about = "/:filename/"
     top-shiny = "/:filename/"
     top-oss = "/:filename/"
