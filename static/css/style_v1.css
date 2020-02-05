@@ -62,3 +62,16 @@ thead, tfoot, tr:nth-child(even) { background: #eee }
 table {
   white-space: nowrap;
 }
+
+
+.profile_pic_card_text {
+  color: #aaa; 
+  font-size: 12px;
+}
+
+/* center bootstrap cards */ 
+.card {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
