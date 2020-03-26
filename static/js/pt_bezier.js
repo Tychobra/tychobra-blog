@@ -22,7 +22,7 @@ Pts.quickStart( "#pt", "#000" );
         chain[i-2].to( Geom.interpolate( chain[i], chain[i-1], 2 ) ); 
       }
 
-      form.strokeOnly("#0277BD", 10, "round").line( Curve.bezier( chain ) );
+      form.strokeOnly("#2491EB", 10, "round").line( Curve.bezier( chain ) );
       form.strokeOnly("rgba(255,255,255,.3)", 1).line( chain );
       form.fillOnly("#fff").points( chain, 1, "circle")
     },

@@ -4,7 +4,7 @@
 * #18BC9C dark sea foam green
 *
 * #286DA8 primary blue
-* #0277BD material ui blue
+* #2491EB material ui blue
 *
 */
 body {
@@ -19,7 +19,7 @@ a:hover,
 a:focus,
 a:active,
 a.active {
-  color: #0277BD;
+  color: #2491EB;
   outline: none; }
 
 nav {
@@ -73,7 +73,7 @@ hr.star-light {
 
 hr.star-light:after {
   color: white;
-  background-color: #0277BD; }
+  background-color: #2491EB; }
 
 hr.star-primary {
   border-color: black; }
@@ -93,7 +93,7 @@ section {
 
 section.success {
   color: white;
-  background: #0277BD; }
+  background: #2491EB; }
 
 @media (max-width: 767px) {
   section {
@@ -107,7 +107,7 @@ section.success {
   z-index: 1999999999;
   border-bottom: 1px solid #ccc}
 #mainNav .navbar-brand {
-  color: #0277BD;
+  color: #2491EB;
   font-weight: 700;
   font-size: 2em; 
 }
@@ -115,25 +115,25 @@ section.success {
   letter-spacing: 1px; 
 }
 #mainNav .navbar-nav li.nav-item a.nav-link {
-  color: #0277BD;
+  color: #2491EB;
   padding: 10px;
   margin: 5px; 
 }
 #mainNav .navbar-toggler {
   font-size: 14px;
   padding: 11px;
-  color: #0277BD;
-  border-color: #0277BD; }
+  color: #2491EB;
+  border-color: #2491EB; }
 #mainNav .navbar-toggler:hover, #mainNav .navbar-toggler:focus {
   color: white;
-  border-color: #0277BD;
-  background-color: #0277BD; 
+  border-color: #2491EB;
+  background-color: #2491EB; 
 }
 
 a.nav-link.active {
     color: white !important;
     border-radius: 3px;
-    background: #0277BD; 
+    background: #2491EB; 
 }
 
 .wrapper {
@@ -179,7 +179,7 @@ header.masthead .container {
 
 footer {
   color: white;
-  background-color: #0277BD;
+  background-color: #2491EB;
   padding: 50px 0;
 }
 
@@ -188,15 +188,15 @@ footer {
   font-size: 20px;
   margin-top: 15px;
   transition: all .3s ease-in-out;
-  color: #0277BD;
-  border: solid 2px #0277BD;
+  color: #2491EB;
+  border: solid 2px #2491EB;
   background: transparent; 
 }
 
 .btn-outline-green:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active {
   color: white;
-  border: solid 2px #0277BD;
-  background: #0277BD;
+  border: solid 2px #2491EB;
+  background: #2491EB;
 }
 
 .btn-outline {
@@ -209,7 +209,7 @@ footer {
 }
 
 .btn-outline:hover, .btn-outline:focus, .btn-outline:active, .btn-outline.active {
-  color: #0277BD;
+  color: #2491EB;
   border: solid 2px white;
   background: white; 
 }
