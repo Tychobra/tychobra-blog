@@ -84,7 +84,8 @@ If you are looking for an in depth understanding of our preferred CRUD applicati
 
 - should we switch from `DBI` to `pool`?  We encountered some issues with an old version of MySQL (5.6 IIRC) and `pool`, but if pool works better for all modern DBI compatible database, we should probably consider using `pool`.
 
-- should we use `digest` to create guids to use as the primary keys for our database tables.  We prefer to use guid over auto incremented primary keys, but is digest the best way to generate these guids?
+- ~~should we use `digest` to create guids to use as the primary keys for our database tables.  We prefer to use guid over auto incremented primary keys, but is digest the best way to generate these guids?~~
+  - update 2020-04-15: we now use `uuid::UUIDgenerate()` to create unique primary keys for almost all our tables.  We have found this to work better than using `digest`.
 
 ### Conclusion
 

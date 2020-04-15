@@ -70,7 +70,10 @@ output:
 <h3>Our Database Questions</h3>
 <ul>
 <li><p>should we switch from <code>DBI</code> to <code>pool</code>? We encountered some issues with an old version of MySQL (5.6 IIRC) and <code>pool</code>, but if pool works better for all modern DBI compatible database, we should probably consider using <code>pool</code>.</p></li>
-<li><p>should we use <code>digest</code> to create guids to use as the primary keys for our database tables. We prefer to use guid over auto incremented primary keys, but is digest the best way to generate these guids?</p></li>
+<li><del>should we use <code>digest</code> to create guids to use as the primary keys for our database tables. We prefer to use guid over auto incremented primary keys, but is digest the best way to generate these guids?</del>
+<ul>
+<li>update 2020-04-15: we now use <code>uuid::UUIDgenerate()</code> to create unique primary keys for almost all our tables. We have found this to work better than using <code>digest</code>.</li>
+</ul></li>
 </ul>
 </div>
 <div id="conclusion" class="section level3">
