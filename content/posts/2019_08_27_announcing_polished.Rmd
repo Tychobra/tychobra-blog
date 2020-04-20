@@ -33,4 +33,4 @@ Polished uses a serverless architecture for authentication and data storage. Thi
 
 You integrate polished with your Shiny app by setting up a polished configuration folder and making a few minor modifications directly to your Shiny app R code.  Documentation on the setup process can be found [here](https://github.com/Tychobra/polished/blob/master/README.md).
 
-We can't wait to see what people build with polished, and we'd love to help you and your team integrate it. Check out the [webpage](https://polished.tychobra.com) or browse, clone, or fork the code on [Github.](https://github.com/Tychobra/polished)
+We can't wait to see what people build with polished, and we'd love to help you and your team integrate it. Check out the [webpage](https://polished.tech) or browse, clone, or fork the code on [Github.](https://github.com/Tychobra/polished)
