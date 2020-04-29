@@ -1,0 +1,44 @@
+---
+title: "shinyFeedback 0.2.0 CRAN Release"
+author: "Andy Merlino"
+date: "2020-04-29"
+categories: ["R", "Shiny"]
+tags: ["R", "Shiny", "shinyFeedback"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588077144/Screen_Shot_2020-04-28_at_8.31.32_AM_kx4rn8.png"
+intro: "I am excited to announce that shinyFeedback 0.2.0 is now available on CRAN.  shinyFeedback
+is and R package that allows you easily display user feedback in Shiny apps.  shinyFeedback's
+ primary user feedback mechanism is to display user feedback along side Shiny 
+inputs"
+output:
+  html_document
+---
+
+
+
+<p>I am excited to announce that <span class="inline_code">shinyFeedback</span> 0.2.0 is on its way to CRAN (it may take a day or 2 for it to be available on your CRAN mirror). <span class="inline_code">shinyFeedback</span>
+is an R package that allows you to easily display user feedback in Shiny apps. <span class="inline_code">shinyFeedback</span>’s
+primary user feedbacks are displayed alongside Shiny inputs like this:</p>
+<p><img width="100%" src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588077144/Screen_Shot_2020-04-28_at_8.31.32_AM_kx4rn8.png"/></p>
+<p><span class="inline_code">shinyFeedback</span> 0.2.0 underwent a significant rewrite of the JavaScript that controls when the feedback
+messages are displayed. I had been meaning to clean up this JavaScript for a while, but,
+as is often the case, I had not been able to find the time.</p>
+<p>I was reinvigorated to work on shinyFeedback when, late last year, Hadley Wickham mentioned <span class="inline_code">shinyFeedback</span> and added a <span class="inline_code">shinyFeedback</span> example to the “User Feedback” chapter of his upcoming <a href="https://mastering-shiny.org/action-feedback.html">Mastering Shiny</a> book. I am thrilled <span class="inline_code">shinyFeedback</span> is getting a mention in Hadley’s upcoming book, but I also knew <span class="inline_code">shinyFeedback</span> needed improvements before appearing in a book for Shiny masters! I feel that <span class="inline_code">shinyFeedback</span> got (at least the most pressing) of these needed improvements with this 0.2.0 release. Please let me know if you have recommendations for further enhancements!</p>
+<p>In addition to the underlying JavaScript refactor, there are significant new features in shinyFeedback 0.2.0:</p>
+<ul>
+<li>new input feedback for <span class="inline_code">shinyWidgets::pickerInput()</span></li>
+<li>new input feedback for <span class="inline_code">shinyWidgets::airDatPickerInput()</span> and <span class="inline_code">shiny::dateRangeInput()</span>. <span class="citation">@pcogis</span> submitted a flawless PR to add support for these 2 inputs. Thanks <span class="citation">@pcogis</span>!</li>
+<li>a new <span class="inline_code">loadingButton()</span> input.
+<video width="100%" height="240" autoplay loop muted playsinline src="/images/loadingButton.mp4"></video>
+When a button click triggers a long running process and no feedback is given after the button click, the user will understandably think nothing happened and click the button again. Double clicking an action button can cause a bunch of issues
+if not guarded againts (e.g. long running calculations can run multiple times or, worse, duplicate writes can be made to the database). Of course, it is fairly simple to add custom styles and logic to implement the loading button from scratch, but it is nice to
+have an out of the box solution as well.</li>
+<li>a toast notification
+<video width="100%" height="240" autoplay loop muted playsinline src="/images/showToast.mp4"></video>
+The toast notifications will not seem new to many Shiny developers as there is already an R package (shinytoastr) that wraps the same JavaScript library (toastr). We just wrapped the library slightly
+differently. Please see the <a href="https://merlinoa.github.io/shinyFeedback/articles/loading-button-and-toast.html">loadingButton and showToast vignette</a> for additional detail.</li>
+<li>there are now new functions <span class="inline_code">showFeedback()</span> and <span class="inline_code">hideFeedback()</span> which can be used as an alternative to <span class="inline_code">feedback()</span>. See the <a href="https://merlinoa.github.io/shinyFeedback/articles/shinyFeedback-intro.html">intro vignette</a> for additional detail.</li>
+</ul>
+<p><span class="inline_code">shinyFeedback</span> also now has a new pkgdown website <a href="https://merlinoa.github.io/shinyFeedback/">here</a>!</p>
+<p>I want to thank Patrick Howard for his excellent work on this release. Patrick is a new coauthor of <span class="inline_code">shinyFeedback</span>.</p>
+<p>Please open an issue on GitHub or leave a comment below if you have any problems with the <span class="inline_code">shinyFeedback</span>.</p>
