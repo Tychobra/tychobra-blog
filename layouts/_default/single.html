@@ -5,7 +5,7 @@
       <div class="row" style="margin-bottom: 20px">
         {{ if .Params.image }}
         <div class = "col-md-5">
-          <img src="{{ .Params.image }}" />
+          <img src="{{ .Params.image }}" width="100%"/>
         </div>
         <div class = "col-md-7">
           <h1><span class="title">{{ .Title }}</span></h1>
@@ -25,7 +25,7 @@
 
   <main>
     <div class="row">
-      <div class="col-lg-8 offset-lg-2">
+      <div class="col-lg-8 offset-lg-2" style="line-height: 1.6;">
         {{ .Content }}
         <div class="justify-content-center row pt-5">
           <div class="col-xs-12 bg-light" style="padding: 15px;">
