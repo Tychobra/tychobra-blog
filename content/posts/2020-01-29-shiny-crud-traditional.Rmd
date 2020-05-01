@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **NOTE:** This post assumes knowledge of R and Shiny and some familiarity with databases.  If you are new to R and Shiny, there are great learning resources at [https://shiny.rstudio.com/](https://shiny.rstudio.com/).  If you are comfortable with R and Shiny, but the idea of persistent data storage is new to you, then first read [Dean Attali's excellent post on persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html)
 
-## Overview
+## Background
 
 The ability to persist data across user sessions is a very common requirement for web apps.  e.g. A to-do app is a basic app requiring persistent storage.  In a to-do app, the user can add an item to their to-do list and close the app.  The next time the user opens the app, they can view the previously created to-do item (the to-do item has persisted).  The user can then edit or delete the to-do item and those changes will then persist to future user sessions.
 
@@ -28,9 +28,19 @@ While a to-do app is one of the simplest apps requiring persistent data storage,
 
 At Tychobra, we regularly add CRUD functionality to Shiny.  In doing so, we have adopted a few techniques that improve the code and UX of CRUD in Shiny.  The goal of this post is to share our Shiny CRUD knowledge, and hopefully improve how we work with databases in the future.  Please feel free to make suggestions for improvements in the comments and on GitHub!
 
+## App Overview
+
+Our Shiny app uses the well-known [mtcars](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html) dataset.  The user will be able to create, read, update, and delete cars from this table of cars.  
+
+<br/>
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hP9C80NFojA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+<br/>
+
 ## Data
 
-Our Shiny app uses the well-known [mtcars](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html) dataset.  The user will be able to create, read, update, and delete cars from this table of cars.  First we prepare the `mtcars` data frame for the database.  If you open "data_prep/data_preps.R" you can see we made a few simple data adjustments and created a new "uid" column to use for the primary key in the database. 
+First we prepare the `mtcars` data frame for the database.  If you open "data_prep/data_preps.R" you can see we made a few simple data adjustments and created a new "uid" column to use for the primary key in the database. 
 
 Also in the "data_prep/" folder, we created a "db_init.R" script.  This script is used to define the database schema and seed the database with the cleaned `mtcars` data.
 
