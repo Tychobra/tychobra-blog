@@ -23,7 +23,7 @@ The ability to persist data across user sessions is a very common requirement fo
 
 While a to-do app is one of the simplest apps requiring persistent data storage, there is no shortage of apps requiring the same fundamental actions for creating, reading, updating, and deleting persistent data.  These data requirments are so ubiquitous that apps implementing **C**reate, **R**ead, **U**pdate, and **D**elete database functionality are often referred to as CRUD apps.  In this blog post, we demonstrate how to create a simple CRUD app with R and Shiny.  We will use SQLite for our database. 
 
-- [App Source Code](https://github.com/Tychobra/shiny_crud/tree/master/traditional)
+- [App Source Code](https://github.com/Tychobra/shiny_crud/tree/master/01_traditional)
 - [Live App](https://tychobra.shinyapps.io/crud_traditional)
 
 At Tychobra, we regularly add CRUD functionality to Shiny.  In doing so, we have adopted a few techniques that improve the code and UX of CRUD in Shiny.  The goal of this post is to share our Shiny CRUD knowledge, and hopefully improve how we work with databases in the future.  Please feel free to make suggestions for improvements in the comments and on GitHub!
@@ -78,7 +78,7 @@ The following bullets give a high level summary of our database practices:
 
 - wrap queries in `tryCatch()`: the code blocks that create, update, and delete data from the database are executed within the `tryCatch()` function. If an error occurs when executing the try code block (e.g. the network connection is lost), we can then properly handle the error. 
 
-- show user feedback: We use the `shinytoastr` package to send either *success* or *error* toast messages after attempting a database create, update, or delete.  We use `shinyFeedback` to show messages along side Shiny inputs.  And we use `shinycssloaders` to show CSS spinners while outputs are loading. 
+- show user feedback: We use the `shinyFeedback` package to send either *success* or *error* toast messages after attempting a database create, update, or delete.  We also use `shinyFeedback` to show messages alongside Shiny inputs.  And we use `shinycssloaders` to show CSS spinners while outputs are loading. 
 
 - use `DBI` and `dplyr` for queries: We write parameterized queries with the `DBI::dbExecute()` function to perform all create, update, and delete database queries. Parameterized queries guard against SQL injection.  We use `dplyr` to execute the GET queries to read data using the familiar `dplyr` syntax.
 
