@@ -1,0 +1,106 @@
+---
+title: "Auditable Database Storage... What's Different?"
+author: "Nick Merlino and Andy Merlino"
+date: "2020-05-06"
+categories: ["R", "Shiny"]
+tags: ["R", "Shiny", "SQLite", "database"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588768703/Screen_Shot_2020-05-06_at_8.37.57_AM_ngpbgc.png"
+intro: 'Create a Shiny app with an auditable database.  We cover what makes a database auditable, and why you might
+want to set up your next database with auditability in mind.'
+output:
+  html_document
+---
+
+
+
+<p>This is a followup post to the <a href="https://www.tychobra.com/posts/2020-01-29-shiny-crud-traditional/">Shiny CRUD blog post</a>. The Shiny CRUD blog post covers how to build a Shiny app that is capable of <strong>C</strong>reating, <strong>R</strong>eading, <strong>U</strong>pdating, and <strong>D</strong>eleting records from a database. This post describes an auditable alternative to CRUD. Auditable data storage requires that you never lose any information; the historical state of the data must be preserved. To achieve auditability, we never delete or update rows in the database tables. Instead we mark deleted rows as deleted and add a new row into the database table each time there is a data update.</p>
+<p>We created a simple demo Shiny app that implements auditable database storage:</p>
+<ul>
+<li><a href="https://tychobra.shinyapps.io/crud_auditable">Live App</a></li>
+</ul>
+<p>The remainder of this post will give a high level overview of the above app, and it will compare and contrast the auditable database approach with the traditional CRUD app from the previous post.</p>
+<p>To dive deep and learn about the nuances of this implimentation you can explore the app code here:</p>
+<ul>
+<li><a href="https://github.com/Tychobra/shiny_crud/tree/master/02_auditable">App Source Code</a></li>
+</ul>
+<p>Please feel free to make suggestions for improvements in the comments and on GitHub!</p>
+<div id="data-prep" class="section level2">
+<h2>Data Prep</h2>
+<p>Our Shiny app uses the well-known <a href="https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html">mtcars</a> dataset.
+Like in the Traditional CRUD app, we made some minor alterations to the mtcars dataset which can be found in the “data_prep/data_prep.R” script.</p>
+<p>Also in the “data_prep/” folder, we created a “db_init.R” script. This script is used to define the database schema and seed the database with the cleaned <span class="inline_code">mtcars</span> data. You should be able to run the “data_prep/data_prep.R” and “data_prep/db_init.R” scripts to reproduce our data prepartion and the creation of the initial database.</p>
+</div>
+<div id="similarities-with-traditional-crud" class="section level2">
+<h2>Similarities with Traditional CRUD</h2>
+<p>From the user’s perspective the app functions identically to the Traditional CRUD app:</p>
+<div class="row">
+<div class="col-sm-6">
+<img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588768703/Screen_Shot_2020-05-06_at_8.37.57_AM_ngpbgc.png"/>
+<br/>
+<br/>
+</div>
+<div class="col-sm-6">
+<img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/c_scale,w_360,h_250/v1580306537/Screen_Shot_2020-01-28_at_6.25.20_PM_cslyiv.png"/>
+<br/>
+<br/>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-6">
+<img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/c_scale,w_360,h_250/v1580306537/Screen_Shot_2020-01-28_at_6.25.45_PM_fuw9yf.png"/>
+<br/>
+<br/>
+</div>
+<div class="col-sm-6">
+<img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588768743/Screen_Shot_2020-05-06_at_8.38.51_AM_w2a15x.png"/>
+<br/>
+<br/>
+</div>
+</div>
+</div>
+<div id="differences-from-traditional-crud" class="section level2">
+<h2>Differences from Traditional CRUD</h2>
+<p>The traditional CRUD app implements data Create, Read, Update, and Delete operations. The auditable variation has only Create and Read. In the auditable variation, rather than deleting the car from the table entirely, we insert a new row for the car with a value of <span class="inline_code">1</span> (SQLite stores booleans as integers – 1 for TRUE and 0 for FALSE) for the “is_deleted” column. When reading in the data, we filter out all but the most recently updated row for each car. We then filter out cars with “is_deleted” values of <span class="inline_code">1</span>.</p>
+<p>To get the current data we simply read in the most recently modified row for each car using <code class="inline_code">dplyr</code>:</p>
+<pre class="r"><code>conn %&gt;%
+  tbl(&quot;mtcars&quot;) %&gt;%
+  select(-uid) %&gt;%
+  collect() %&gt;%
+  mutate(
+    created_at = as.POSIXct(created_at, tz = &quot;UTC&quot;),
+    modified_at = as.POSIXct(modified_at, tz = &quot;UTC&quot;)
+  ) %&gt;%
+  # find the most recently modified row for each car
+  group_by(id_) %&gt;%
+  filter(modified_at == max(modified_at)) %&gt;%
+  ungroup() %&gt;%
+  # filter out deleted cars
+  filter(is_deleted == 0) %&gt;%
+  arrange(desc(modified_at))</code></pre>
+<p>Since we do not ever delete or update any data, we can read in our cars table at any historical point in time. e.g. To get the “mtcars” data as of 30 days ago we could run:</p>
+<pre class="r"><code>conn %&gt;%
+  tbl(&quot;mtcars&quot;) %&gt;%
+  select(-uid) %&gt;%
+  collect() %&gt;%
+  mutate(
+    created_at = as.POSIXct(created_at, tz = &quot;UTC&quot;),
+    modified_at = as.POSIXct(modified_at, tz = &quot;UTC&quot;)
+  ) %&gt;%
+  # filter for data as of 30 days ago
+  filter(modified_at &lt;= Sys.Date() - lubridate::days(30)) %&gt;%
+  # find the most recently modified row for each car
+  group_by(id_) %&gt;%
+  filter(modified_at == max(modified_at)) %&gt;%
+  ungroup() %&gt;%
+  # filter out deleted cars
+  filter(is_deleted == 0) %&gt;%
+  arrange(desc(modified_at))</code></pre>
+<div id="conclusion" class="section level3">
+<h3>Conclusion</h3>
+<p>This auditable approach to database storage gives us access to the historical state of our data at any point in time. This level of historical detail is mandatory for many business applications.</p>
+<p>For this demo app, we traded efficiency for simplicity; our simple approach is not appropriate for large data sets. A few tweaks to the database and queries could help it scale to larger data. Additional changes would be needed as you continue to scale to bigger and bigger data.</p>
+<p>Auditability is required by many applications, but it does come with the overhead of making your data larger and more complicated. We recommend the traditional CRUD approach if you do not require auditability. In general, keep it as simple as possible.</p>
+<p>We hope this simple demo can give you a jump start if you ever need to implement similar functionality in a Shiny app.</p>
+</div>
+</div>
