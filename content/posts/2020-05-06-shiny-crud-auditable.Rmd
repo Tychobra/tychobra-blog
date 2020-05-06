@@ -6,6 +6,7 @@ categories: ["R", "Shiny"]
 tags: ["R", "Shiny", "SQLite", "database"]
 draft: false
 image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588768703/Screen_Shot_2020-05-06_at_8.37.57_AM_ngpbgc.png"
+twitterImg: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1588768703/Screen_Shot_2020-05-06_at_8.37.57_AM_ngpbgc.png"
 intro: 'Create a Shiny app with an auditable database.  We cover what makes a database auditable, and why you might
 want to set up your next database with auditability in mind.'
 output:
