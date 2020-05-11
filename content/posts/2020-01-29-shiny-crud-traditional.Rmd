@@ -88,7 +88,7 @@ The following bullets give a high level summary of our database practices:
 
 - Use reactive triggers to reload db data: We create a `shiny::reactiveVal()` named "*_trigger" directly above each reactive that reads in data from the database.  We then attach these reactives to session$userData, so we can increment them from within nested Shiny modules. These reactive triggers are used to reload data from the database after a successful create, update, or delete query.
 
-If you are looking for an in depth understanding of our preferred CRUD applications techniques please check out [the Shiny app source code](https://github.com/Tychobra/shiny_crud/tree/master/traditional).
+If you are looking for an in depth understanding of our preferred CRUD applications techniques please check out [the Shiny app source code](https://github.com/Tychobra/shiny_crud/tree/master/01_traditional).
 
 ### Our Database Questions
 

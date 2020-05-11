@@ -74,7 +74,7 @@ output:
 <li><p>Add buttons to <code>DT::datatable()</code>: we like to add action buttons to each row of the datatable to edit, delete, and perform other actions on specific rows. The buttons communicate with Shiny using custom JavaScript event handlers. You can find the JavaScript in “shiny_app/www/cars_table_module.js”</p></li>
 <li><p>Use reactive triggers to reload db data: We create a <code>shiny::reactiveVal()</code> named "*_trigger" directly above each reactive that reads in data from the database. We then attach these reactives to session$userData, so we can increment them from within nested Shiny modules. These reactive triggers are used to reload data from the database after a successful create, update, or delete query.</p></li>
 </ul>
-<p>If you are looking for an in depth understanding of our preferred CRUD applications techniques please check out <a href="https://github.com/Tychobra/shiny_crud/tree/master/traditional">the Shiny app source code</a>.</p>
+<p>If you are looking for an in depth understanding of our preferred CRUD applications techniques please check out <a href="https://github.com/Tychobra/shiny_crud/tree/master/01_traditional">the Shiny app source code</a>.</p>
 </div>
 <div id="our-database-questions" class="section level3">
 <h3>Our Database Questions</h3>
