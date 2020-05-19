@@ -210,7 +210,7 @@ xgboost_tuned &lt;- tune::tune_grid(
   metrics = yardstick::metric_set(rmse, rsq, mae),
   control = tune::control_grid(verbose = TRUE)
 )</code></pre>
-<p>In the above code block <span class="inline_code">tune_grid()</span> performed grid search over all our (60) grid parameter combinations defined in <span class="inline_code">xgboost_grid</span> and used 5 fold cross validation along with rmse (Root Mean Squared Error), rsq (R Squared), and mae (Mean Absolute Error) to measure prediction accuracy. So our tidymodels tuning just fit 60 X 5 = 300 XGBoost models each with 1,000 trees all in search of the optimal hyperparameters. Don’t try that on your TI-83!</p>
+<p>In the above code block <span class="inline_code">tune_grid()</span> performed grid search over all our 60 grid parameter combinations defined in <span class="inline_code">xgboost_grid</span> and used 5 fold cross validation along with rmse (Root Mean Squared Error), rsq (R Squared), and mae (Mean Absolute Error) to measure prediction accuracy. So our tidymodels tuning just fit 60 X 5 = 300 XGBoost models each with 1,000 trees all in search of the optimal hyperparameters. Don’t try that on your TI-83!</p>
 <p>These are the hyperparameter values which performed best at minimizing RMSE.</p>
 <pre class="r"><code>xgboost_tuned %&gt;%
   tune::show_best(metric = &quot;rmse&quot;) %&gt;%
@@ -318,8 +318,8 @@ knitr::kable(xgboost_best_params)</code></pre>
 <pre class="r"><code>xgboost_model_final &lt;- xgboost_model %&gt;% 
   finalize_model(xgboost_best_params)</code></pre>
 </div>
-<div id="step-8-evaluate-performance-of-parameters-on-test-data" class="section level4">
-<h4>Step 8: Evaluate Performance of Parameters on Test Data</h4>
+<div id="step-8-evaluate-performance-on-test-data" class="section level4">
+<h4>Step 8: Evaluate Performance on Test Data</h4>
 <p>Now that we have trained our model, we need to evaluate the model performance. We use test data from step 1 (data that was not used in the model training) to evaluate performance.</p>
 <p>We use the <span class="inline_code">rmse</span> (Root Mean Squared Error), <span class="inline_code">rsq</span> (R Squared), and <span class="inline_code">mae</span> (Mean Absolute Value) metrics from the <span class="inline_code">yardstick</span> package in our model evaluation.</p>
 <p>First let’s evaluate the metrics on the training data:</p>
