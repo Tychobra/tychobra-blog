@@ -9,14 +9,15 @@
         </div>
         <div class = "col-md-7">
           <h1><span class="title">{{ .Title }}</span></h1>
-          {{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
-          {{ if .Params.date }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+          <br/>
+          {{ with .Params.author }}<h3 class="author">{{ . }}</h3>{{ end }}
+          {{ if .Params.date }}<h4 class="date">{{ .Date.Format "2006/01/02" }}</h4>{{ end }}
         </div>
       {{ else }}
         <div class="col-12">
           <h1><span class="title">{{ .Title }}</span></h1>
-          {{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
-          {{ if .Params.date }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+          {{ with .Params.author }}<h3 class="author">{{ . }}</h3>{{ end }}
+          {{ if .Params.date }}<h4 class="date">{{ .Date.Format "2006/01/02" }}</h4>{{ end }}
         </div>
       {{ end }}
       </div>
