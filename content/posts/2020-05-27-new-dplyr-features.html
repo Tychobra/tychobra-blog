@@ -1,0 +1,311 @@
+---
+title: "My Favorite dplyr 1.0.0 Features"
+author: "Nick Merlino"
+date: "2020-05-27"
+categories: ["R", "dplyr"]
+tags: ["R", "dplyr", "rstats"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1590587008/dplyr_img_jahud7.png"
+intro: "As you are likely aware by now, the dplyr 1.0.0 release is right around the corner.  I am very excited about this huge milestone for dplyr.  In this post, we'll go over my favorite new features coming in the 1.0.0 release."
+output:
+  html_document
+---
+
+
+
+<p>As you are likely aware by now, the <span class="inline_code">dplyr</span> 1.0.0 release is right around the corner. I am very excited about this huge milestone for <span class="inline_code">dplyr</span>. In this post, we’ll go over my favorite new features coming in the 1.0.0 release.</p>
+<pre class="r"><code># Install development version of dplyr
+remotes::install_github(
+  &quot;tidyverse/dplyr&quot;, 
+  ref = &quot;23c166fa7cc247f0ee1a4ee5ac31cd19dc63868d&quot;
+)</code></pre>
+<p>Note: in the above call to <span class="inline_code">install_github()</span>, I passed the most recent (as of the writing of this post) GitHub commit hash to the “ref” argument to install the <span class="inline_code">dplyr</span> package exactly as it existed as of that above commit. This way we can make sure we are using the exact same package version even as the
+development version progresses on GitHub.</p>
+<p>Requisite packages and data:</p>
+<pre class="r"><code>library(dplyr)
+
+# data
+library(AmesHousing)
+
+# Load the housing data, clean names, then grab just six columns 
+# to simplify the dataset for display purposes.
+ames_data &lt;- make_ames() %&gt;%
+  janitor::clean_names() %&gt;%
+  select(sale_price, bsmt_fin_sf_1, first_flr_sf, 
+         total_bsmt_sf, neighborhood, gr_liv_area)</code></pre>
+<div class="row">
+<div class="col-sm-4">
+<br/>
+<br/>
+<img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1590587015/keanu_replacements_p5ycqr.jpg"/>
+</div>
+<div class="col-sm-8">
+<h2>Superceding Functions</h2>
+<br/>
+<p>There are two major families of functions that supercede old functionality</p>
+<em>The Replacements:</em>
+<ul>
+<br/>
+<li>
+<strong>`across()`</strong>
+</li>
+<br/>
+<li>
+<strong>`slice()`</strong>
+</li>
+</ul>
+<br/>
+<p>In addition, there are some deprecated functions that are worth noting as well as some new <span class='inline_code'>mutate()</span> arguments. In this post, I'll walk through some examples of each of these changes.</p>
+<br/>
+</div>
+</div>
+<div id="across" class="section level3">
+<h3>Across</h3>
+<hr />
+<p>All <span class='inline_code'>*_if()</span>, <span class='inline_code'>*_at()</span> and <span class='inline_code'>*_all()</span> function variants were superseded in favor of <span class="inline_code">across()</span>. <span class="inline_code">across()</span> makes manipulating multiple columns more intuitive and consistent with other dplyr syntax.</p>
+<p><span class="inline_code">across()</span> is my favorite new dplyr function because I’ve always had to stop and think and pull up the docs when using <span class="inline_code">mutate_if()</span> and <span class="inline_code">mutate_at()</span>. Most notably, I appreciate the use of tidy selection rather than the <span class="inline_code">vars()</span> method used in <span class="inline_code">mutate_at()</span>.</p>
+<p>Let’s see <span class="inline_code">across()</span> in action. Let’s say we want to convert all the square foot variables to square yards. When we take a look at our data, we see that all of the square foot variables either contain “area” or "_sf" in their names.</p>
+<pre class="r"><code>feet_to_yards &lt;- function(x) {x / 9}</code></pre>
+<p>Here is the old way this was done with <span class="inline_code">mutate_at()</span>:</p>
+<pre class="r"><code>ames_data %&gt;%
+  mutate_at(.vars = vars(contains(&quot;_sf&quot;) | contains(&quot;area&quot;)) , .funs = feet_to_yards)</code></pre>
+<p>Now we use <span class="inline_code">across()</span> in combination with a vector. In this case, we used <span class="inline_code">contains()</span> to grab variable names that contain "_sf" or “area”.</p>
+<pre class="r"><code>ames_data %&gt;%
+  mutate(across(.cols = c(contains(&quot;_sf&quot;), contains(&quot;area&quot;)), .fns = feet_to_yards)) %&gt;%
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood gr_liv_area
+##        &lt;int&gt;         &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;              &lt;dbl&gt;
+## 1     215000         0.222        184            120  North_Ames         184  
+## 2     105000         0.667         99.6           98  North_Ames          99.6
+## 3     172000         0.111        148.           148. North_Ames         148. 
+## 4     244000         0.111        234.           234. North_Ames         234. 
+## 5     189900         0.333        103.           103. Gilbert            181  
+## 6     195500         0.333        103.           103. Gilbert            178.</code></pre>
+<p><span class="inline_code">across()</span> can also replace <span class="inline_code">mutate_if()</span> in combination with <span class="inline_code">where()</span>.</p>
+<p>Old way with <span class="inline_code">mutate_if()</span>:</p>
+<pre class="r"><code>ames_data %&gt;% 
+  mutate_if(is.numeric, log)</code></pre>
+<p>New way with <span class="inline_code">across(where())</span>:</p>
+<pre class="r"><code>## new dplyr(log transform numeric values)
+ames_data %&gt;% 
+  mutate(across(where(is.numeric), log)) %&gt;%
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood gr_liv_area
+##        &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;              &lt;dbl&gt;
+## 1       12.3         0.693         7.41          6.98 North_Ames          7.41
+## 2       11.6         1.79          6.80          6.78 North_Ames          6.80
+## 3       12.1         0             7.19          7.19 North_Ames          7.19
+## 4       12.4         0             7.65          7.65 North_Ames          7.65
+## 5       12.2         1.10          6.83          6.83 Gilbert             7.40
+## 6       12.2         1.10          6.83          6.83 Gilbert             7.38</code></pre>
+<p><span class="inline_code">summarize()</span> now uses the same <span class="inline_code">across()</span> and <span class="inline_code">where()</span> syntax that we used above with mutate. Let’s find the average of all numerics columns for each neighborhood.</p>
+<pre class="r"><code>ames_data %&gt;%
+  group_by(neighborhood) %&gt;%
+  summarize(across(where(is.numeric), mean, .names = &quot;mean_{col}&quot;)) %&gt;%
+  head()</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##   neighborhood mean_sale_price mean_bsmt_fin_s… mean_first_flr_…
+##   &lt;fct&gt;                  &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 North_Ames           145097.             3.66            1175.
+## 2 College_Cre…         201803.             4.01            1173.
+## 3 Old_Town             123992.             5.80             945.
+## 4 Edwards              130843.             4.27            1115.
+## 5 Somerset             229707.             4.59            1188.
+## 6 Northridge_…         322018.             3.99            1613.
+## # … with 2 more variables: mean_total_bsmt_sf &lt;dbl&gt;, mean_gr_liv_area &lt;dbl&gt;</code></pre>
+<p>As you can see, we calculated the neighborhood average for all numeric values. On top of that, we were able to easily prefix the column names with “mean_” thanks to another useful <span class="inline_code">across()</span> argument called “.names”.</p>
+<p>Not only that, in conjunction with the <span class="inline_code">where()</span> helper, <span class="inline_code">across()</span> unifies "_if" and "_at" semantics, allowing more intuitive and elegant column selection. For example, let’s mutate the square footage variables that are integers (like <span class="inline_code">mutate_if()</span>), and the square footage variables that end with "_sf" (like <span class="inline_code">mutate_at()</span>) to make them doubles.</p>
+<pre class="r"><code>ames_data %&gt;%
+  mutate(across(where(is.integer) &amp; ends_with(&quot;_sf&quot;), as.double))</code></pre>
+<pre><code>## # A tibble: 2,930 x 6
+##    sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood gr_liv_area
+##         &lt;int&gt;         &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;              &lt;int&gt;
+##  1     215000             2         1656          1080 North_Ames          1656
+##  2     105000             6          896           882 North_Ames           896
+##  3     172000             1         1329          1329 North_Ames          1329
+##  4     244000             1         2110          2110 North_Ames          2110
+##  5     189900             3          928           928 Gilbert             1629
+##  6     195500             3          926           926 Gilbert             1604
+##  7     213500             3         1338          1338 Stone_Brook         1338
+##  8     191500             1         1280          1280 Stone_Brook         1280
+##  9     236500             3         1616          1595 Stone_Brook         1616
+## 10     189000             7         1028           994 Gilbert             1804
+## # … with 2,920 more rows</code></pre>
+<p>Notice, the “first_flr_sf” was converted to a double, but the “gr_living_area” remains an integer because it doesn’t fit the criteria <span class='inline_code'>aends_with("_sf")</span>.</p>
+<p><span class="inline_code">across()</span> can also perform <span class="inline_code">mutate_all()</span> functionality with <span class="inline_code">across(everything(), …</span></p>
+<p> </p>
+</div>
+<div id="slice" class="section level3">
+<h3>Slice</h3>
+<hr />
+<p><span class="inline_code">top_n()</span>, <span class="inline_code">sample_n()</span>, and <span class="inline_code">sample_frac()</span> have been superseded in favor of a new family of <span class="inline_code">slice()</span> helpers.</p>
+<p>Reasons for future deprecation:</p>
+<ul>
+<li><span class="inline_code">top_n()</span> - has a confusing name that might reasonably be considered to filter for the min or the max rows. For example, let’s stay we have data for a track and field race that records lap times. One might reasonable assume that <span class="inline_code">top_n()</span> would return the fastest times but they actually return the times that took the longest. <span class="inline_code">top_n()</span> has been superseded by <span class="inline_code">slice_min()</span>, and <span class="inline_code">slice_max()</span>.</li>
+<li><span class="inline_code">sample_n()</span> and <span class="inline_code">sample_frac()</span> - it’s easier to remember (and pull up documentation for) two mutually exclusive arguments to one function called <span class="inline_code">slice_sample()</span>.</li>
+</ul>
+<pre class="r"><code># Old way to grab the five most expensive homes by sale price
+ames_data %&gt;% 
+  top_n(n = 5, wt = sale_price)</code></pre>
+<pre class="r"><code># New way to grab the five most expensive homes by sale price
+ames_data %&gt;% 
+  slice_max(sale_price, n = 5)</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood   gr_liv_area
+##        &lt;int&gt;         &lt;dbl&gt;        &lt;int&gt;         &lt;dbl&gt; &lt;fct&gt;                &lt;int&gt;
+## 1     755000             3         2444          2444 Northridge            4316
+## 2     745000             3         2411          2396 Northridge            4476
+## 3     625000             3         1831          1930 Northridge            3627
+## 4     615000             3         2470          2535 Northridge_He…        2470
+## 5     611657             3         2364          2330 Northridge_He…        2364</code></pre>
+<pre class="r"><code># You can also grab the five cheapest homes
+ames_data %&gt;% 
+  slice_min(sale_price, n = 5)</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood   gr_liv_area
+##        &lt;int&gt;         &lt;dbl&gt;        &lt;int&gt;         &lt;dbl&gt; &lt;fct&gt;                &lt;int&gt;
+## 1      12789             7          832           678 Old_Town               832
+## 2      13100             5          733             0 Iowa_DOT_and_…         733
+## 3      34900             6          720           720 Iowa_DOT_and_…         720
+## 4      35000             7          498           498 Edwards                498
+## 5      35311             2          480           480 Iowa_DOT_and_…         480</code></pre>
+<pre class="r"><code># Old way to sample four random rows(in this case properties)
+ames_data %&gt;% 
+  sample_n(4)</code></pre>
+<pre class="r"><code># New way to sample four random rows(in this case properties)
+ames_data %&gt;% 
+  slice_sample(n = 4)</code></pre>
+<pre><code>## # A tibble: 4 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood   gr_liv_area
+##        &lt;int&gt;         &lt;dbl&gt;        &lt;int&gt;         &lt;dbl&gt; &lt;fct&gt;                &lt;int&gt;
+## 1     119000             6          948           948 Edwards                948
+## 2     156000             1          990           990 College_Creek          990
+## 3     245700             3         1614          1614 Northridge_He…        1614
+## 4     108000             2         1032          1032 Old_Town              1032</code></pre>
+<pre class="r"><code># Old way to sample a random 0.2% of the rows
+ames_data %&gt;% 
+  sample_frac(0.002)</code></pre>
+<pre class="r"><code># New way to sample a random 0.2% of the rows
+ames_data %&gt;% 
+  slice_sample(prop = 0.002)</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   sale_price bsmt_fin_sf_1 first_flr_sf total_bsmt_sf neighborhood gr_liv_area
+##        &lt;int&gt;         &lt;dbl&gt;        &lt;int&gt;         &lt;dbl&gt; &lt;fct&gt;              &lt;int&gt;
+## 1     110000             7          682           440 Old_Town            1230
+## 2     136000             6         1040          1040 North_Ames          1040
+## 3     208000             1         1182           572 Crawford            1982
+## 4     115000             1          789           789 Old_Town             789
+## 5     145500             1         1053          1053 North_Ames          1053</code></pre>
+<p>Additionally, <span class="inline_code">slice_head()</span> and <span class="inline_code">slice_tail()</span> can be used to grab the first or last rows, respectively.</p>
+</div>
+<div id="nest-by" class="section level3">
+<h3>Nest By</h3>
+<hr />
+<p><span class="inline_code">nest_by()</span> works similar to <span class="inline_code">group_by()</span> but is more visual because it changes the structure of the tibble instead of just adding grouped metadata. With <span class="inline_code">nest_by()</span>, the tibble transforms into a rowwised dataframe (Run <span class="inline_code">vignette(“rowwise”)</span> to learn more about the revised rowwise funtionality in <span class="inline_code">dplyr</span> 1.0.0).</p>
+<p>First, for the sake of comparison, let’s calculate the average sale price by neighborhood using <span class="inline_code">group_by()</span> and <span class="inline_code">summarize()</span>:</p>
+<pre class="r"><code>ames_data %&gt;%
+  group_by(neighborhood) %&gt;%
+  summarise(avg_sale_price = mean(sale_price)) %&gt;%
+  ungroup() %&gt;%
+  head()</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   neighborhood       avg_sale_price
+##   &lt;fct&gt;                       &lt;dbl&gt;
+## 1 North_Ames                145097.
+## 2 College_Creek             201803.
+## 3 Old_Town                  123992.
+## 4 Edwards                   130843.
+## 5 Somerset                  229707.
+## 6 Northridge_Heights        322018.</code></pre>
+<p>The <span class="inline_code">summarize()</span> operation works well with <span class="inline_code">group_by()</span>, particularly if the output of the summarization function are single numeric values. But what if we want to perform a more complicated operation on the grouped rows? Like, for example, a linear model. For that, we can use <span class="inline_code">nest_by()</span> which stores grouped data not as metadata but as lists in a new column called “data”.</p>
+<pre class="r"><code>nested_ames &lt;- ames_data %&gt;%
+  nest_by(neighborhood) 
+
+head(nested_ames)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+## # Rowwise:  neighborhood
+##   neighborhood                     data
+##   &lt;fct&gt;              &lt;list&lt;tbl_df[,5]&gt;&gt;
+## 1 North_Ames                  [443 × 5]
+## 2 College_Creek               [267 × 5]
+## 3 Old_Town                    [239 × 5]
+## 4 Edwards                     [194 × 5]
+## 5 Somerset                    [182 × 5]
+## 6 Northridge_Heights          [166 × 5]</code></pre>
+<p>As you can see, <span class="inline_code">nest_by()</span> fundementally changes the structure of the dataframe unlike <span class="inline_code">group_by()</span>. This feature becomes useful when you want to apply a model to each row of the nested data.</p>
+<p>For example, here is a linear model that uses square footage to predict sale price applied to each neighborhood.</p>
+<pre class="r"><code>nested_ames_with_model &lt;- nested_ames %&gt;%
+  mutate(linear_model = list(lm(sale_price ~ gr_liv_area, data = data)))
+
+head(nested_ames_with_model)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+## # Rowwise:  neighborhood
+##   neighborhood                     data linear_model
+##   &lt;fct&gt;              &lt;list&lt;tbl_df[,5]&gt;&gt; &lt;list&gt;      
+## 1 North_Ames                  [443 × 5] &lt;lm&gt;        
+## 2 College_Creek               [267 × 5] &lt;lm&gt;        
+## 3 Old_Town                    [239 × 5] &lt;lm&gt;        
+## 4 Edwards                     [194 × 5] &lt;lm&gt;        
+## 5 Somerset                    [182 × 5] &lt;lm&gt;        
+## 6 Northridge_Heights          [166 × 5] &lt;lm&gt;</code></pre>
+<p>It’s important to note that the model must be vectorized, a tranformation performed here with <span class="inline_code">list()</span>. Let’s take a look at the model that was created for the “North_Ames” neighborhood.</p>
+<pre class="r"><code>north_ames_model &lt;- nested_ames_with_model %&gt;%
+  filter(neighborhood == &quot;North_Ames&quot;) %&gt;%
+  pull(linear_model)
+
+north_ames_model</code></pre>
+<pre><code>## [[1]]
+## 
+## Call:
+## lm(formula = sale_price ~ gr_liv_area, data = data)
+## 
+## Coefficients:
+## (Intercept)  gr_liv_area  
+##    74537.97        54.61</code></pre>
+<p>The model shows that for each additional square foot, a house in the North Ames neighborhood is expected to sell for about $54.61 more.</p>
+<hr />
+<div id="additional-mutate-arguments" class="section level4">
+<h4>Additional Mutate arguments</h4>
+<p>Control what columns are retained with “.keep”</p>
+<pre class="r"><code># For example &quot;used&quot; retains only the columns involved in the mutate
+ames_data %&gt;% 
+  mutate(sale_price_euro = sale_price / 1.1, .keep = &quot;used&quot;) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   sale_price sale_price_euro
+##        &lt;int&gt;           &lt;dbl&gt;
+## 1     215000         195455.
+## 2     105000          95455.
+## 3     172000         156364.
+## 4     244000         221818.
+## 5     189900         172636.
+## 6     195500         177727.</code></pre>
+<p>Control where the new columns are added with “.before” and “.after”</p>
+<pre class="r"><code># For example, make the &quot;sale_price_euro&quot; column appear to the left of the &quot;sale_price&quot; column like this
+ames_data %&gt;% 
+  mutate(
+    sale_price_euro = sale_price / 1.1, .keep = &quot;used&quot;, .before = sale_price
+  ) %&gt;% 
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   sale_price_euro sale_price
+##             &lt;dbl&gt;      &lt;int&gt;
+## 1         195455.     215000
+## 2          95455.     105000
+## 3         156364.     172000
+## 4         221818.     244000
+## 5         172636.     189900
+## 6         177727.     195500</code></pre>
+<hr />
+</div>
+</div>
+<div id="conculsion" class="section level2">
+<h2>Conculsion</h2>
+<hr />
+<p>This was a short, high level look at my favorite new features coming in <span class="inline_code">dplyr</span> 1.0.0. The two major changes were the addition of <span class="inline_code">across()</span> and <span class="inline_code">slice()</span> which supercede old functionality. <span class="inline_code">across()</span> makes it easy to mutate specific columns or rows in a more intuitive, consistent way. <span class="inline_code">slice()</span> makes similar improvements to data sampling methods. I am also a big fan of the new <span class="inline_code">nest_by()</span> functionality, and plan to search for elegant ways to incorporate it in my upcoming R projects. These changes align dplyr syntax more closely with conventions common in the tidyverse. Thanks tidyverse team for continually pushing the boundaries to make data analytics easier in practice and to learn/teach!</p>
+<p>Not all dplyr 1.0.0 changes were covered in this post. Learn more at <a href="https://www.tidyverse.org/" class="uri">https://www.tidyverse.org/</a>.</p>
+</div>

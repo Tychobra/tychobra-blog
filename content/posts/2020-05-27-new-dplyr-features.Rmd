@@ -1,0 +1,283 @@
+---
+title: "My Favorite dplyr 1.0.0 Features"
+author: "Nick Merlino"
+date: "2020-05-27"
+categories: ["R", "dplyr"]
+tags: ["R", "dplyr", "rstats"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1590587008/dplyr_img_jahud7.png"
+intro: "As you are likely aware by now, the dplyr 1.0.0 release is right around the corner.  I am very excited about this huge milestone for dplyr.  In this post, we'll go over my favorite new features coming in the 1.0.0 release."
+output:
+  html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(shiny)
+```
+
+As you are likely aware by now, the <span class='inline_code'>dplyr</span> 1.0.0 release is right around the corner.  I am very excited about this huge milestone for <span class='inline_code'>dplyr</span>.  In this post, we'll go over my favorite new features coming in the 1.0.0 release.
+
+```{r echo = TRUE, eval = FALSE}
+# Install development version of dplyr
+remotes::install_github(
+  "tidyverse/dplyr", 
+  ref = "23c166fa7cc247f0ee1a4ee5ac31cd19dc63868d"
+)
+```
+
+
+
+Note: in the above call to <span class='inline_code'>install_github()</span>, I passed the most recent (as of the writing of this post) GitHub commit hash to the "ref" argument to install the <span class='inline_code'>dplyr</span> package exactly as it existed as of that above commit.  This way we can make sure we are using the exact same package version even as the
+development version progresses on GitHub.
+
+Requisite packages and data:
+
+```{r echo = TRUE, results = "hide", message = FALSE, warning = FALSE}
+library(dplyr)
+
+# data
+library(AmesHousing)
+
+# Load the housing data, clean names, then grab just six columns 
+# to simplify the dataset for display purposes.
+ames_data <- make_ames() %>%
+  janitor::clean_names() %>%
+  select(sale_price, bsmt_fin_sf_1, first_flr_sf, 
+         total_bsmt_sf, neighborhood, gr_liv_area)
+```
+
+
+```{r echo = FALSE}
+fluidRow(
+  column(
+    width = 4,
+    br(),
+    br(),
+    tags$img(src = "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1590587015/keanu_replacements_p5ycqr.jpg")
+  ),
+  column(
+    width = 8,
+    h2("Superceding Functions"),
+    br(),
+    tags$p("There are two major families of functions that supercede old functionality"),
+    em("The Replacements:"),
+    tags$ul(
+      br(),
+      tags$li(strong("`across()`")),
+      br(),
+      tags$li(strong("`slice()`"))
+    ),
+    br(),
+    tags$p(HTML("In addition, there are some deprecated functions that are worth noting as well as some new <span class='inline_code'>mutate()</span> arguments. In this post, I'll walk through some examples of each of these changes.")),
+    br()
+  )
+)
+```
+
+### Across
+
+---------
+
+All <span class='inline_code'>\*_if()</span>, <span class='inline_code'>\*_at()</span> and <span class='inline_code'>\*_all()</span> function variants were superseded in favor of <span class='inline_code'>across()</span>.  <span class='inline_code'>across()</span> makes manipulating multiple columns more intuitive and consistent with other dplyr syntax.
+
+<span class='inline_code'>across()</span> is my favorite new dplyr function because I've always had to stop and think and pull up the docs when using <span class='inline_code'>mutate_if()</span> and <span class='inline_code'>mutate_at()</span>. Most notably, I appreciate the use of tidy selection rather than the <span class='inline_code'>vars()</span> method used in <span class='inline_code'>mutate_at()</span>.
+
+Let's see <span class='inline_code'>across()</span> in action. Let's say we want to convert all the square foot variables to square yards.  When we take a look at our data, we see that all of the square foot variables either contain "area" or "_sf" in their names.  
+
+``` {r}
+feet_to_yards <- function(x) {x / 9}
+```
+
+Here is the old way this was done with <span class='inline_code'>mutate_at()</span>:
+
+``` {r eval = FALSE}
+ames_data %>%
+  mutate_at(.vars = vars(contains("_sf") | contains("area")) , .funs = feet_to_yards)
+```
+
+Now we use <span class='inline_code'>across()</span> in combination with a vector. In this case, we used <span class='inline_code'>contains()</span> to grab variable names that contain "_sf" or "area".
+
+``` {r warning = FALSE}
+ames_data %>%
+  mutate(across(.cols = c(contains("_sf"), contains("area")), .fns = feet_to_yards)) %>%
+  head()
+```
+
+<span class='inline_code'>across()</span> can also replace <span class='inline_code'>mutate_if()</span> in combination with <span class='inline_code'>where()</span>.
+
+Old way with <span class='inline_code'>mutate_if()</span>:
+
+```{r eval = FALSE}
+ames_data %>% 
+  mutate_if(is.numeric, log)
+```
+
+New way with <span class='inline_code'>across(where())</span>:
+
+```{r}
+## new dplyr(log transform numeric values)
+ames_data %>% 
+  mutate(across(where(is.numeric), log)) %>%
+  head()
+
+```
+
+<span class='inline_code'>summarize()</span> now uses the same <span class='inline_code'>across()</span> and <span class='inline_code'>where()</span> syntax that we used above with mutate. Let's find the average of all numerics columns for each neighborhood.
+
+```{r} 
+ames_data %>%
+  group_by(neighborhood) %>%
+  summarize(across(where(is.numeric), mean, .names = "mean_{col}")) %>%
+  head()
+```
+
+As you can see, we calculated the neighborhood average for all numeric values.  On top of that, we were able to easily prefix the column names with "mean_" thanks to another useful <span class='inline_code'>across()</span> argument called ".names".
+
+Not only that, in conjunction with the <span class='inline_code'>where()</span> helper, <span class='inline_code'>across()</span> unifies "_if" and "_at" semantics, allowing more intuitive and elegant column selection. For example, let's mutate the square footage variables that are integers (like <span class='inline_code'>mutate_if()</span>), and the square footage variables that end with "_sf" (like <span class='inline_code'>mutate_at()</span>) to make them doubles.  
+
+```{r}
+ames_data %>%
+  mutate(across(where(is.integer) & ends_with("_sf"), as.double))
+```
+
+Notice, the "first_flr_sf" was converted to a double, but the "gr_living_area" remains an integer because it doesn't fit the criteria <span class='inline_code'>aends_with("_sf")</span>.
+
+<span class='inline_code'>across()</span> can also perform <span class='inline_code'>mutate_all()</span> functionality with <span class='inline_code'>across(everything(), ...</span> 
+
+&nbsp;
+
+### Slice
+
+-----------
+
+<span class='inline_code'>top_n()</span>, <span class='inline_code'>sample_n()</span>, and <span class='inline_code'>sample_frac()</span> have been superseded in favor of a new family of <span class='inline_code'>slice()</span> helpers.
+
+Reasons for future deprecation:
+
+* <span class='inline_code'>top_n()</span> - has a confusing name that might reasonably be considered to filter for the min or the max rows. For example, let's stay we have data for a track and field race that records lap times.  One might reasonable assume that <span class='inline_code'>top_n()</span> would return the fastest times but they actually return the times that took the longest. <span class='inline_code'>top_n()</span> has been superseded by <span class='inline_code'>slice_min()</span>, and <span class='inline_code'>slice_max()</span>.
+* <span class='inline_code'>sample_n()</span> and <span class='inline_code'>sample_frac()</span> - it's easier to remember (and pull up documentation for) two mutually exclusive arguments to one function called <span class='inline_code'>slice_sample()</span>.
+
+``` {r eval = FALSE}
+# Old way to grab the five most expensive homes by sale price
+ames_data %>% 
+  top_n(n = 5, wt = sale_price)
+```
+
+```{r}
+# New way to grab the five most expensive homes by sale price
+ames_data %>% 
+  slice_max(sale_price, n = 5)
+
+# You can also grab the five cheapest homes
+ames_data %>% 
+  slice_min(sale_price, n = 5)
+```
+
+```{r eval = FALSE}
+# Old way to sample four random rows(in this case properties)
+ames_data %>% 
+  sample_n(4)
+```
+
+```{r}
+# New way to sample four random rows(in this case properties)
+ames_data %>% 
+  slice_sample(n = 4)
+```
+
+```{r eval = FALSE}
+# Old way to sample a random 0.2% of the rows
+ames_data %>% 
+  sample_frac(0.002)
+```
+
+```{r}
+# New way to sample a random 0.2% of the rows
+ames_data %>% 
+  slice_sample(prop = 0.002)
+```
+
+Additionally, <span class='inline_code'>slice_head()</span> and <span class='inline_code'>slice_tail()</span> can be used to grab the first or last rows, respectively. 
+
+### Nest By
+
+-------
+
+<span class='inline_code'>nest_by()</span> works similar to <span class='inline_code'>group_by()</span> but is more visual because it changes the structure of the tibble instead of just adding grouped metadata. With <span class='inline_code'>nest_by()</span>, the tibble transforms into a rowwised dataframe (Run <span class='inline_code'>vignette("rowwise")</span> to learn more about the revised rowwise funtionality in <span class='inline_code'>dplyr</span> 1.0.0).
+
+First, for the sake of comparison, let's calculate the average sale price by neighborhood using <span class='inline_code'>group_by()</span> and <span class='inline_code'>summarize()</span>:
+
+``` {r}
+ames_data %>%
+  group_by(neighborhood) %>%
+  summarise(avg_sale_price = mean(sale_price)) %>%
+  ungroup() %>%
+  head()
+```
+
+The <span class='inline_code'>summarize()</span> operation works well with <span class='inline_code'>group_by()</span>, particularly if the output of the summarization function are single numeric values. But what if we want to perform a more complicated operation on the grouped rows? Like, for example, a linear model.  For that, we can use <span class='inline_code'>nest_by()</span> which stores grouped data not as metadata but as lists in a new column called "data".
+
+```{r}
+nested_ames <- ames_data %>%
+  nest_by(neighborhood) 
+
+head(nested_ames)
+```
+
+As you can see, <span class='inline_code'>nest_by()</span> fundementally changes the structure of the dataframe unlike <span class='inline_code'>group_by()</span>.  This feature becomes useful when you want to apply a model to each row of the nested data.   
+
+For example, here is a linear model that uses square footage to predict sale price applied to each neighborhood.
+
+```{r}
+nested_ames_with_model <- nested_ames %>%
+  mutate(linear_model = list(lm(sale_price ~ gr_liv_area, data = data)))
+
+head(nested_ames_with_model)
+```
+
+It's important to note that the model must be vectorized, a tranformation performed here with <span class='inline_code'>list()</span>.  Let's take a look at the model that was created for the "North_Ames" neighborhood.
+
+```{r}
+north_ames_model <- nested_ames_with_model %>%
+  filter(neighborhood == "North_Ames") %>%
+  pull(linear_model)
+
+north_ames_model
+```
+
+The model shows that for each additional square foot, a house in the North Ames neighborhood is expected to sell for about $54.61 more.
+
+-------
+
+#### Additional Mutate arguments
+
+Control what columns are retained with ".keep"
+
+``` {r}
+# For example "used" retains only the columns involved in the mutate
+ames_data %>% 
+  mutate(sale_price_euro = sale_price / 1.1, .keep = "used") %>% 
+  head()
+```
+
+Control where the new columns are added with ".before" and ".after"
+
+```{r}
+# For example, make the "sale_price_euro" column appear to the left of the "sale_price" column like this
+ames_data %>% 
+  mutate(
+    sale_price_euro = sale_price / 1.1, .keep = "used", .before = sale_price
+  ) %>% 
+  head()
+```
+--------
+
+## Conculsion
+
+--------
+
+This was a short, high level look at my favorite new features coming in <span class='inline_code'>dplyr</span> 1.0.0.  The two major changes were the addition of <span class='inline_code'>across()</span> and <span class='inline_code'>slice()</span> which supercede old functionality.  <span class='inline_code'>across()</span> makes it easy to mutate specific columns or rows in a more intuitive, consistent way.  <span class='inline_code'>slice()</span> makes similar improvements to data sampling methods.  I am also a big fan of the new <span class='inline_code'>nest_by()</span> functionality, and plan to search for elegant ways to incorporate it in my upcoming R projects.  These changes align dplyr syntax more closely with conventions common in the tidyverse.  Thanks tidyverse team for continually pushing the boundaries to make data analytics easier in practice and to learn/teach! 
+
+Not all dplyr 1.0.0 changes were covered in this post. Learn more at https://www.tidyverse.org/.
