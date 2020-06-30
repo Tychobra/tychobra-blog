@@ -1,0 +1,38 @@
+---
+title: "Introducing Polished.tech"
+author: "Andy Merlino"
+date: "2020-06-30"
+categories: ["R", "shiny", "polished", "polished.tech"]
+tags: ["R", "shiny", "polished", "rstats"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1593286515/polished_poster_kitd2d.png"
+intro: "Polished.tech is the easiest way to add authentication and user administration to your Shiny apps.  With a polished.tech account, adding authentication is as easy as installing an R package and copying and pasting a few lines of code."
+output:
+  html_document
+---
+
+<a href="https://polished.tech/">Polished.tech</a> is our new software service that makes it easier than ever to add modern authentication to your Shiny apps.
+
+<br/>
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qIurQHjbgLg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+<br/>
+
+Implementing authentication from scratch is inefficient and increases the probability of security vulnerabilities.  Hand rolling custom logic to encrypt credentials, reset passwords, verify email addresses, etc. is a tedious, error-prone process.  Wouldn't it be nice if an R package handled this boilerplate code for you?
+
+Yea, we thought so too.  That's why we created the <code>polished</code> R package.  <code>Polished</code> provides sign in and registration pages with all the accompanying bells and whistles your users expect from a modern web app.  Polished is secure, customizable to your brand, allows social sign in (with Google, Microsoft, and Facebook), and more. Check out all available features at <a href="https://polished.tech/">polished.tech</a> and try out <a href="https://tychobra.shinyapps.io/polished_example_01">a demo Shiny app using polished.tech here</a>. 
+
+<code>Polished</code> has been available for installation from GitHub for about a year now.  Over this past year, the biggest drawback to using polished was that <code>polished</code> required a substantial level of effort and domain experience to setup and maintain.
+
+With the introduction of polished.tech, <code>polished</code> is now much easier to setup, maintain, and update.  Before polished.tech, you had to provision a PostreSQL database and a <code>plumber</code> API to use <code>polished</code>.  With polished.tech, we host the database and API for you.  Enabling <code>polished</code> user authentication is now as easy as installing the <code>polished</code> R package, creating a polished.tech account, and copying and pasting a few lines of code.  Check out the <a href="https://polished.tech/docs/get-started">official getting started docs</a> for details.
+
+I personally am extremely excited about polished.tech.  It has been a long time in the making.  It is free to create a polished.tech account, and there is a free tier for basic usage.  If you are looking for a modern authentication solution for your Shiny apps, I would be thrilled if you try out <a href="https://polished.tech/">polished.tech</a>.  
+
+<center>
+  <a href="https://dashboard.polished.tech/" class="btn btn-lg btn-outline-green">
+    Register for polished.tech here!
+  </a>
+</center>
