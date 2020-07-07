@@ -1,0 +1,49 @@
+---
+title: "Experiences Building a Production Shiny App for Mobile"
+author: "Andy Merlino"
+date: "2020-07-07"
+categories: ["R", "shiny", "shinyMobile", "example apps"]
+tags: ["R", "shiny", "shinyMobile", "rstats"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1593796497/Screen_Shot_2020-07-03_at_1.14.49_PM_qwdgrf.png"
+intro: "A few months back we had the pleasure of working with Axion Biosystems to develop a mobile first shiny application using the excellent shinyMobile package.  The app is called Maestro Z, and Axion ended up making a couple commercial advertisements for it.  We are very happy with how the app turned out, and we were thrilled to see a Shiny app we built featured in ads."
+output:
+  html_document
+---
+
+<image src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1593795956/Screen_Shot_2020-07-03_at_12.58.31_PM_gt7ooj.jpg"/ height="300px" style="float: right;">
+
+A few months back we had the pleasure of working with <a href="https://www.axionbiosystems.com/">Axion Biosystems</a> to develop a mobile first <code>shiny</code> application.  The app is called "Maestro Z", and Axion ended up making a couple commercial advertisements for it (one magazine ad and a video).  We are very happy with how the app turned out, and we were thrilled to see a Shiny app we built featured in ads!
+
+In this post we discuss our tech stack and some of our learnings developing a mobile first <code>shiny</code> app.  Of course, we can't share the code, but we can share our experience.  But first, a big thank you to Axion Biosystems for giving us the opportunity to work on this app and for pushing our <code>shiny</code> development capabilities to new heights!
+
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BJfELAeQrJ0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
+
+<br/>
+
+### App Background 
+
+The app is used by biotech research labs that have purchased devices called "Maestros" from Axion Biosystems (You can see a Maestro device in the opening scene in the above video).  These Maestro devices physically sit in research labs and run experiments over the course of several days.  As the experiment runs, the researchers need to monitor the results.  The Maestro Z <code>shiny</code> app gives these researchers a way to check their experiments from their mobile device when they are on the go.
+<br/>
+
+### Tech Stack
+
+First things first, we needed a database to centrally store experiment data from the different Maestro devices.  We went with our reliable favorite -- PostgreSQL.  We ended up using Google Cloud Platform's cloud PostgreSQL service to easily provision a scalable Postgres database. 
+
+Next, we needed an http API to collect data from the Maestro devices.  We went with a Nodejs, Express app for the API and ran the API on serverless Firebase functions.  The Maestro devices send data from the research labs to this API. The API authenticates the requests, validates the data, and saves the data to the Postgres database.  
+
+Finally, we built the actual Shiny app.  
+
+We used the <code>shinyMobile</code> package for the UI.  <code>shinyMobile</code> is a great new R package by David Granjon that brings a slick mobile UI to Shiny.  The overall look and feel are excellent, but as inexperienced mobile UI designers, we ran into more than a couple speed bumps tweaking the design for the various mobile screen sizes.  At the end of the day we got it to look just how we wanted, and we learned a lot along the way.
+
+Next we configured the app as a Progressive Web App (PWA).  Configuring a web app as a PWA enables it to behave like a native mobile app.  A PWA can have an icon on your phone's home screen, open in full screen mode, show a splash screen when opening, and other tidbits that mobile users expect.  <code>shinyMobile</code> makes it easy to configure your <code>shiny</code> app as a PWA.  I encourage you to give <code>shinyMobile</code> a try next time you need a mobile UI for a Shiny app.
+
+We used the <code>highcharter</code> package for the charts.  We have a lot of experience with <code>highcharter</code>, but this was our first time using <code>highcharter</code> in a mobile first setting. 
+
+In testing the Maestro Z app, we discovered that lower end mobile devices could not render certain charts in an acceptable amount of time.  To optimize render speeds we turned to highcharts' boost mode.  Highcharts (the JavaScript library behind <code>highcharter</code>) has a "boost" mode that uses WebGL and a stripped down SVG renderer.  When boost mode is enabled, the charts are rendered much more quickly, but certain highcharts capabilities are no longer available.  We would have preferred to keep boost mode disabled and retain all the great highcharts features, but we needed the speed improvements offered by boost mode.   
+
+We used our <a href="https://polished.tech">polished</a> R package to handle user authentication.  Authorized users can register, sign in, reset passwords, and verify email just like they would expect from any other web application.  We even extended the <code>polished</code> admin capabilities to handle Maestro/user authorization in addition to authorizing <code>shiny</code> app users.
+
+This was certainly a full stack devepment adventure.  We designed everything from the the database schema to the <code>shiny</code> app user authentication/authorization. Please get in touch if you find this interesting, and let us know if you have worked on similar projects!
