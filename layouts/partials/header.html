@@ -9,8 +9,11 @@
     {{ if hasPrefix .URL "/posts" }}
       <!-- CSS for code highlighting -->
       
-      {{ if eq .URL "/posts"}}
-      
+      {{ if eq .URL "/posts/"}}
+        <meta property="og:title" content="{{ .Site.Title }}">
+        <meta property="og:type" content="website">
+        <meta property="description" content="R/Shiny developers and instructors">
+        <meta property="og:description" content="R/Shiny developers and instructors">
       {{ else }}
         <link rel="stylesheet" href="{{ "/css/solarized-light.css" | relURL }}" />
         
