@@ -5,9 +5,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ .Site.Title }}</title>
+    
+    {{ if hasPrefix .URL "/posts" }}
+      <!-- CSS for code highlighting -->
+      
+      {{ if eq .URL "/posts"}}
+      
+      {{ else }}
+        <link rel="stylesheet" href="{{ "/css/solarized-light.css" | relURL }}" />
+        
+        <meta property="og:title" content="{{ .Title }}-{{.Site.Title }}">
+        <meta property="og:type" content="article">
+        
+        {{ $defaultDescription := printf "Article posted by %s, on %s" .Params.author (.Date.Format "Monday, January 2nd, 2006") }}
+        <meta property="description" content="{{ .Description | default $defaultDescription }}">
+        <meta property="og:description" content="{{ .Description | default $defaultDescription }}">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:image" content="{{ .Params.image }}" >
+      {{ end }}
+      
+      
+    {{ else }}
+    
+      <meta property="og:title" content="{{ .Site.Title }}">
+      <meta property="og:type" content="website">
+      <meta property="description" content="{{ .Site.Params.description }}">
+      <meta property="og:description" content="{{ .Site.Params.description }}">
+    {{ end }}
+      
+    
     <link rel="stylesheet" href="{{ "/css/style_v1.css" | relURL }}" />
-    <link rel="icon" href="{{ "/www/tychobra-logo-blue.svg" | relURL }}"/>
-
+    <link rel="icon" href="{{ "/www/tychobra-logo-blue.svg" | relURL }}" />
+    
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous" />
 
@@ -17,7 +46,7 @@
 
     <link rel="stylesheet" href="{{ "/css/tychobra.css" | relURL }}" />
     
-    <link rel="stylesheet" href="{{ "/css/solarized-light.css" | relURL }}" />
+   
   </head>
 
   <body>
