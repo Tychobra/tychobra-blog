@@ -1,0 +1,25 @@
+---
+title: "A Dashboard of Shiny Apps"
+author: "Andy Merlino"
+date: "2020-07-17"
+categories: ["R", "shiny", "polished"]
+tags: ["R", "shiny", "rstats", "polished", "dashboard"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1594941536/04_polished_shiny_apps_dashboard_o0erii.png"
+intro: "We build a lot of Shiny apps.  Once we have more than a couple related Shiny apps, it often makes sense to create a dashboard of Shiny apps.  A dashboard of Shiny apps allows users to easily visualize their apps, and navigate between apps.  This post covers a simple example of one of these dashboards."
+output:
+  html_document
+---
+
+
+
+<p>We build a lot of Shiny apps. Once we have more than a couple related Shiny apps, it often makes sense to create a dashboard for our Shiny apps. A dashboard of Shiny apps allows users to easily visualize available apps and navigate between apps. This post covers a simple example of one of these dashboards of Shiny apps. The Shiny apps dashboard looks like this:</p>
+<p><img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1594941536/04_polished_shiny_apps_dashboard_o0erii.png" /></p>
+<p>The above dashboard of Shiny apps is itself a Shiny app. It displays screenshots and links to 2 other Shiny apps (“Claims Dashboard” on the left and “Interest Rate Walk” on the right). As you would expect, the user can click on the “Live App” buttons to navigate to the actual apps.</p>
+<p>The dashboard and each of the Shiny apps in the dashboard use our R package, <code>polished</code>, to secure the app with user authentication. <code>polished</code> manages user authorization on a per app basis, so we can restrict user access to the dashboard and to specific apps in the dashboard (e.g. we could give user A access to only “Claims Dashboard” but not “Interest Rate Walk” and user B access to both apps). Once the user is signed in to the dashboard they can seemlessly navigate to all apps that they are authorized to access. Visit <a href="https://polished.tech/">polished.tech</a> to learn more about <code>polished</code> and how to integrate it with your Shiny apps.</p>
+<p>Sign in to the <a href="https://tychobra.shinyapps.io/04_apps_dashboard/">live dashboard of Shiny apps here</a> using the following credentials:</p>
+<ul>
+<li>email: <a href="mailto:demo@tychobra.com" class="email">demo@tychobra.com</a></li>
+<li>password: polished</li>
+</ul>
+<p>If you really want to dive into the details, the <a href="https://github.com/Tychobra/polished_example_apps/tree/master/04_apps_dashboard">source code is available here</a>.</p>
