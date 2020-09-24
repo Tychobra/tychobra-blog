@@ -1,0 +1,39 @@
+---
+title: "New Polished Feature - User Roles"
+author: "Andy Merlino"
+date: "2020-09-24"
+categories: ["R", "shiny", "polished"]
+tags: ["R", "shiny", "rstats", "polished", "authentication", "user roles"]
+draft: false
+image: "/posts/2020-09-16-polished-roles_files/add_role_thumb.png"
+intro: "Do you want to allow certain users different permissions within your Shiny app? We recently added the ability to assign permissions to individual users directly from your polished.tech dashboard."
+output:
+  html_document
+---
+
+
+
+<p><br/></p>
+<p>Polished is an R package that adds authentication and user administration to your Shiny apps. We continue to push forward with new improvements and are happy to introduce a new feature:</p>
+<center>
+<div id="user-roles" class="section level4">
+<h4><em>user roles</em></h4>
+</center>
+<p><br/>
+The new roles feature allows you to assign varying permissions to your users within your Shiny app. By assigning roles, you can manage which users have access to different capabilities of your app. e.g. you can create a role that grants data editing access.</p>
+<p>Let’s say you have a table of data stored in your Shiny app. You want to grant some users the ability to create/add new data, but you want the rest of your users to only view the data. This is where Polished’s new role feature comes in. From your polished.tech dashboard you can create an “editor” role, and then assign that role to any of your users. You can then use this “editor” role to programmatically allow/disallow your users to edit data.</p>
+<p>You may create as many roles as you need. In this example, we have added a role called “editor”.</p>
+<p><img src="/posts/2020-09-16-polished-roles_files/add_role_polished.png" />
+After creating a role, you can assign users to it from the dashboard. Here we have assigned Andy to the role of editor.</p>
+<p><img src="/posts/2020-09-16-polished-roles_files/users_role_polished.png" /></p>
+<p>You can access your users’ roles in the standard polished user list at:</p>
+<pre><code> session$userData$user()$roles     </code></pre>
+<p>Here is our example polished Shiny app from the printed session list:</p>
+<p><img src="/posts/2020-09-16-polished-roles_files/polished_editor_role_outlined.png" /></p>
+<p>You can now use roles to modify access to granular content/data within your Shiny app!</p>
+<p><br/></p>
+<p>If you want to check out these features and others today, sign up for an account at <a href="https://polished.tech">polished.tech</a>. We are planning a new CRAN release for polished soon, but for now, make sure to install the dev version of polished from GitHub using:</p>
+<pre><code>remotes::install_github(&quot;tychobra/polished&quot;)</code></pre>
+<p><br/>
+Please reach out if you have questions or feedback!</p>
+</div>
