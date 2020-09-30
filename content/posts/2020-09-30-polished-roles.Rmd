@@ -10,14 +10,11 @@ intro: "We recently added the ability to assign roles to individual users direct
 output:
   html_document
 ---
+
 <br/>
 
-`Polished` is an R package that adds authentication and user administration to your Shiny apps.  We continue to push forward with new improvements and are happy to introduce a new feature:
+`Polished` is an R package that adds authentication and user administration to your Shiny apps.  We continue to push forward with new improvements and are happy to introduce a new feature: <strong>user roles</strong>
 
-<center>
-#### _user roles_
-</center>
-<br/>
 Under the hood, user roles are just strings that you define in your polished.tech dashboard.  e.g. you can make a "super_user" role.  You can then assign the "super_user" role to 1 or more users of your `Shiny` app.  Then the next time the user signs in to your `Shiny` app they will have this "super_user" role on their `session$userData$user()$roles` vector that is made available by `polished`.  You can then check the user's roles to allow/restrict access to different aspects of your app.  
 
 
@@ -39,7 +36,7 @@ You may create as many roles as you need. The following is the step my step proc
 
 As noted earlier, you can access your users' roles in the user object provided by polished at:
 
-```{r, eval = FALSE}
+```
 session$userData$user()$roles     
 ```
 
@@ -50,10 +47,9 @@ Here is a Shiny app using the polshed "editor" role that we created above:
 This is a simple feature, but we have found it helps keep our apps consistent and well
 organized.
 
-If you want to check out roles and other new features today, sign up for an account at [polished.tech](https://polished.tech).  And make sure to install the newly released
-0.2.0 version of polished from CRAN with:
+If you want to check out roles and other new features today, sign up for an account at [polished.tech](https://polished.tech).  And make sure to install the newly released 0.2.0 version of polished from CRAN with:
 
-```{r, eval = FALSE}
+```
 install.packages("polished")
 ```
 
