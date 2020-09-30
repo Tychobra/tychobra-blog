@@ -20,7 +20,7 @@ Under the hood, user roles are just strings that you define in your polished.tec
 
 As another example, let's say you have a table of data stored in your `Shiny` app. You want to grant some users the ability to add and edit data, while the rest of your users should only be able to view the data. You can use polished's roles to create an "editor" role, and then assign that role to select users. You can then use the existance of this "editor" role to programmatically allow/restrict adding and editing data.
 
-You may create as many roles as you need. The following is the step my step process for how to create roles in the polished dashboard, and add them to your user:
+You may create as many roles as you need. The following is the step by step process for how to create roles in the polished dashboard, and add them to your user:
 
 1. Go to the "Manage Roles" tab and click the "Add Role" button (top left) to create the "editor" role.
 
