@@ -1,0 +1,62 @@
+---
+title: "New Polished Feature - User Roles"
+author: "Andy Merlino"
+date: "2020-09-30"
+categories: ["R", "shiny", "polished"]
+tags: ["R", "shiny", "rstats", "polished", "authentication", "user roles"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1601479022/add_role_thumb_jj0v45.png"
+intro: "We recently added the ability to assign roles to individual users directly from your polished.tech dashboard.  Use polished roles to set different user permissions within your Shiny app. "
+output:
+  html_document
+---
+<br/>
+
+`Polished` is an R package that adds authentication and user administration to your Shiny apps.  We continue to push forward with new improvements and are happy to introduce a new feature:
+
+<center>
+#### _user roles_
+</center>
+<br/>
+Under the hood, user roles are just strings that you define in your polished.tech dashboard.  e.g. you can make a "super_user" role.  You can then assign the "super_user" role to 1 or more users of your `Shiny` app.  Then the next time the user signs in to your `Shiny` app they will have this "super_user" role on their `session$userData$user()$roles` vector that is made available by `polished`.  You can then check the user's roles to allow/restrict access to different aspects of your app.  
+
+
+As another example, let's say you have a table of data stored in your `Shiny` app. You want to grant some users the ability to add and edit data, while the rest of your users should only be able to view the data. You can use polished's roles to create an "editor" role, and then assign that role to select users. You can then use the existance of this "editor" role to programmatically allow/restrict adding and editing data.
+
+You may create as many roles as you need. The following is the step my step process for how to create roles in the polished dashboard, and add them to your user:
+
+1. Go to the "Manage Roles" tab and click the "Add Role" button (top left) to create the "editor" role.
+
+![](https://res.cloudinary.com/dxqnb8xjb/image/upload/v1601479027/add_role_polished_cnu5fe.png)
+
+
+2. Click the blue button on the same row as your newly created "editor" role to assign users to the role. Here I assigned myself to the role of editor.
+
+
+![](https://res.cloudinary.com/dxqnb8xjb/image/upload/v1601479029/users_role_polished_u3pdtm.png)
+
+3. From within your Shiny app that is using `polished`, check your users' roles to enable/disable certain features of your app.
+
+As noted earlier, you can access your users' roles in the user object provided by polished at:
+
+```{r, eval = FALSE}
+session$userData$user()$roles     
+```
+
+Here is a Shiny app using the polshed "editor" role that we created above:
+
+![](https://res.cloudinary.com/dxqnb8xjb/image/upload/v1601479025/polished_editor_role_outlined_afzr2e.png)
+
+This is a simple feature, but we have found it helps keep our apps consistent and well
+organized.
+
+If you want to check out roles and other new features today, sign up for an account at [polished.tech](https://polished.tech).  And make sure to install the newly released
+0.2.0 version of polished from CRAN with:
+
+```{r, eval = FALSE}
+install.packages("polished")
+```
+
+<br/>
+
+Please reach out if you have questions or feedback!
