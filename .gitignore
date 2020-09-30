@@ -6,3 +6,5 @@ public/
 .Rproj.user
 static/data/
 blogdown/
+static/rmarkdown-libs/
+statis/posts/
