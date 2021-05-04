@@ -13,7 +13,7 @@ output:
 
 I am very pleased to officially announce Polished Hosting.  Polished Hosting is our brand new hosting platform for Shiny apps.  Polished Hosting is designed, from the ground up, to be secure and easy to use; your apps are always secured using TLS, and apps are deployed with a single function call. 
 
-Easily and cheaply set up your custom domain.  e.g. if your company's domain name is <code>example.com</code>, you can deploy an app to <code>shiny.example.com</code> or <code>app.example.com</code> with a few button clicks and copy/pastes.
+Easily and cheaply set up your custom domain.  e.g. if your company's domain name is <a href="#" onclick="return false;">example.com</a>, you can deploy an app to <a href="#" onclick="return false;">shiny.example.com</a> or <a href="#" onclick="return false;">app.example.com</a> with a few button clicks and copy/pastes.
 
 Polished Hosting can deploy to 26 regions across the globe.  Choose the region closest to your users to reduce latency. 
 
