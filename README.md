@@ -14,7 +14,7 @@ Serve the static site for development using:
 blogdown::serve_site()
 ```
 
-Every once ina while you might run into errors and need to rebuild the site from scratch.  To do this simply delete the "public/" directory and run:
+Every once in a while you might run into errors and need to rebuild the site from scratch.  To do this simply delete the "public/" directory and run:
 
 ```
 # R
