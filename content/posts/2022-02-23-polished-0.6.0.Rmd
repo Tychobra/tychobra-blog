@@ -20,13 +20,13 @@ a [previous post here](https://www.tychobra.com/posts/2022-02-10-secure-rmd/).
 
 Another welcome addition in this release is the ability to access the polished user's 
 data via the `session$user` object.  By default, <code>polished</code> now passes the signed in
-user's data to `session$user`.  This won't break any of you existing polished shiny apps as the signed in user's data will always still be available at `session$userData$user()` as it has been in all previous <code>polished</code> releases.  
+user's data to `session$user`.  This won't break any of your existing polished shiny apps as the signed in user's data will always still be available at `session$userData$user()` as it has been in all previous <code>polished</code> releases.  
 
 <code>Polished</code> has historically stored the user's data at this `session$userData$user()` location 
 because that is where <code>shiny</code> recommends <code>shiny</code> developers and
 package authors store arbitrary user data.  However, as long as you are not using an 
-Rstudio hosting option, the `session$user` is usually unused, and you can now use it as
-an alias to `session$userData$user()`.  If you do need access the `session$user` as set by RStudio 
+Rstudio hosting option, the `session$user` is usually unused, and, with `polished`, you can now use it as
+an alias to `session$userData$user()`.  If you need access the `session$user` as set by RStudio 
 Connect (or another RStudio hosting option), set the "override_user" argument of `polished_config()` to `FALSE`.
 
 <div class="row">
