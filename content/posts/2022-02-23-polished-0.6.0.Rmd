@@ -1,0 +1,59 @@
+---
+title: "polished 0.6.0 is now on CRAN!"
+author: "Andy Merlino"
+date: "2022-02-23"
+categories: ["R", "shiny", "polished"]
+tags: ["R", "shiny", "rstats", "polished", "auth", "hosting"]
+draft: false
+image: "https://res.cloudinary.com/dxqnb8xjb/image/upload/v1585004926/logo_transparent_ury8ck.png"
+intro: "Polished 0.6.0 is now on CRAN!  This release includes full Polished Auth R Markdown support and a major internal refactor of the polished codebase"
+show_top_image: false
+output:
+  html_document
+---
+
+The newest, 0.6.0, release of <code>polished</code> is now on CRAN.  The biggest user
+facing enhancement of this release is the new ability to secure R Markdown documents
+using Polished Auth.  The secured R Markdown output can be a static document, or it can use 
+the <code>shiny</code> runtime.  We discussed this capability in more detail in 
+a [previous post here](https://www.tychobra.com/posts/2022-02-10-secure-rmd/).
+
+Another welcome addition in this release is the ability to access the polished user's 
+data via the `session$user` object.  By default, <code>polished</code> now passes the signed in
+user's data to `session$user`.  This won't break any of you existing polished shiny apps as the signed in user's data will always still be available at `session$userData$user()` as it has been in all previous <code>polished</code> releases.  
+
+<code>Polished</code> has historically stored the user's data at this `session$userData$user()` location 
+because that is where <code>shiny</code> recommends <code>shiny</code> developers and
+package authors store arbitrary user data.  However, as long as you are not using an 
+Rstudio hosting option, the `session$user` is usually unused, and you can now use it as
+an alias to `session$userData$user()`.  If you do need access the `session$user` as set by RStudio 
+Connect (or another RStudio hosting option), set the "override_user" argument of `polished_config()` to `FALSE`.
+
+<div class="row">
+<div class="col-lg-7">
+The largest change in this release was an internal refactor of many of the objects 
+and functions for managing Polished Auth.  We switched from using a single large <code>R6</code>
+class to a base R environment and regular R functions (rather than `R6` methods).  This change was inspired by our development
+efforts on a new package, <code>polishedpayments</code>.  <code>polishedpayments</code> makes it easy to 
+add Stripe payments to your polished shiny app.  <code>polishedpayments</code> sits between 
+<code>polished</code> and your custom Shiny app.  It needs to intercept the <code>polished</code> user and handle
+the user based on your selected `polished` and `polishedpayments` options before passing the user along 
+to your shiny app.
+</div>
+<div class = "col-lg-5 text-center">
+  <img src="https://res.cloudinary.com/dxqnb8xjb/image/upload/v1645627927/auth-payments-diagram.png" width="100%"/>
+</div>
+<br/>
+</div>
+
+In our earlier development of <code>polishedpayments</code>, we were having difficulty 
+integrating `polishedpayments` with `polished`.  After this refactor, the integration is much more seemless.
+We hope other R packages will be developed in the future that similarly provide middleware between
+the polished user and the custom shiny app.  We will share more detail on 
+<code>polishedpayments</code> and how you can write similar packages in upcoming blog posts. Please
+subscribe if you'd like to be notified when the posts are released.
+
+There are several other minor updates in this realease.  See the [release notes](https://github.com/Tychobra/polished/releases/tag/v0.6.0) for a 
+full list of updates.
+
+As always, please reach our if you have suggestion, feeback, or just want to get in touch!
