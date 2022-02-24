@@ -27,7 +27,7 @@ signed in user’s data will always still be available at <code>session$userData
 <p><code>Polished</code> has historically stored the user’s data at this <code>session$userData$user()</code> location
 because that is where <code>shiny</code> recommends <code>shiny</code> developers and
 package authors store arbitrary user data. However, as long as you are not using an
-Rstudio hosting option, <code>session$user</code> is usually unused, and, with <code>polished</code>, you can now use it as
+RStudio hosting option, <code>session$user</code> is usually unused, and, with <code>polished</code>, you can now use it as
 an alias to <code>session$userData$user()</code>. If you need access to <code>session$user</code> as set by RStudio
 Connect (or another RStudio hosting option), set the <code>override_user</code> argument of <code>polished_config()</code> to <code>FALSE</code>.</p>
 <div class="row">
@@ -55,4 +55,4 @@ the source code for <code>polishedpayments</code> can be found <a href="https://
 the package can be installed with <code>remotes::install_github(“Tychobra/polishedpayments”)</code>.</p>
 <p>There are several other minor updates in this <code>polished</code> release. See the
 <a href="https://github.com/Tychobra/polished/releases/tag/v0.6.0">release notes</a> for a full list of updates.</p>
-<p>Please subscribe below if you’d like to be notified when new blog posts are released. As always, please reach out if you have suggestions, feeback, or just want to get in touch!</p>
+<p>Please subscribe below if you’d like to be notified when new blog posts are released. As always, please reach out if you have suggestions, feedback, or just want to get in touch!</p>
