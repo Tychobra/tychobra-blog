@@ -1,6 +1,9 @@
 {{ partial "header.html" . }}
 <div class="container wrapper">
   <div class="row">
+    <div class="col-12 text-center" style = "padding: 20px 50px 50px 50px; line-height: 1.75">
+      <h1>As of 2022-09-08, this blog has moved to <a href="https://polished.tech/blog">https://polished.tech/blog</a>.  Please go there for all new posts.</h1>
+    </div>
     <div class="col-12">
       <ul style="list-style-type: none; padding-left: 0;">
         {{ range (where .Data.Pages "Section" "!=" "") }}
