@@ -27,12 +27,18 @@
       {{ .Content }}
       <br/>
       {{ template "_internal/disqus.html" . }}
+      <br/>
+      <br/>
     </div>
     
   
   </div>
-
-{{ partial "footer.html" . }}
-{{ partial "footer-posts.html" . }}
+</div>
+<div class="container-fluid">
+  </div class="row">
+    {{ partial "footer.html" . }}
+    {{ partial "footer-posts.html" . }}
+  </div>
+</div>
 </body>
 </html>
