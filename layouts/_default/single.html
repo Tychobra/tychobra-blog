@@ -27,18 +27,6 @@
     <div class="col-lg-8 offset-lg-2" style="line-height: 1.6; padding: 5px;">
       {{ .Content }}
       <div class="justify-content-center row pt-5">
-        <div class="col-xs-12 bg-light" style="padding: 15px;">
-          <form name="blog_subscribe" method="POST" data-netlify="true">
-            <br/>
-            <h2 class="text-center">Want updates on R/Shiny?</h2>
-            <div class="form-group">
-              <label for="emailInput">Email:</label>
-                <input class="form-control" id="emailInput" type="email" name="email" placeholder="tycho@uraniborg.com" />
-              </div>
-              <button type="submit" class="btn btn-block btn-primary">Subscribe</button>
-            </form>
-          </div>
-        </div>
         <br/>
         {{ template "_internal/disqus.html" . }}
       </div>
